@@ -294,7 +294,8 @@ def gen_sql(config_json):
     event_agg_str=''
     for i in range(len(list_alias)):
         event_agg=list_agg_agg[i]
-        if event_agg != 'flag':
+        event_name=list_agg_event_name[i]
+        if event_agg != 'flag' and event_name not in pay_events:
             event_agg_str = event_agg_str \
                         + 'sum(' + list_alias[i] + ') over (partiton by ' + universal_user_id + ',event_date order by event_date asc rows unbounded preceding) as ' + list_alias[i]+'__sum,\n'
         else:
