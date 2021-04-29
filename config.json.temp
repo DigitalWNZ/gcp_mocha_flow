@@ -18,24 +18,29 @@
     "event_aggregation": [
         {
             "event_name": "user_logged_in",
-            "aggregation": "flag"
+            "Description": "",
+            "Aggregation": "flag"
         },
         {
             "event_name": "session_start",
-            "aggregation": "count"
+            "Description": "",
+            "Aggregation": "count"
         },
         {
             "event_name": "app_remove",
-            "aggregation": "count"
+            "Description": "",
+            "Aggregation": "count"
         },
         {
             "event_name": "screen_view",
-            "aggregation": "count"
+            "Description": "",
+            "Aggregation": "count"
         },
         {
             "event_name": "spend_virtual_currency",
-            "aggregation": "sum",
-            "event_value": {
+            "Description": "",
+            "Aggregation": "sum",
+            "Event_value": {
                 "key_field": "event_params.key",
                 "key_value": "value",
                 "value_field": "event_params.value.int_value"
@@ -43,8 +48,9 @@
         },
         {
             "event_name": "in_app_purchase",
-            "aggregation": "sum",
-            "event_value": "event_value_in_usd"
+            "Description": "",
+            "Aggregation": "sum",
+            "Event_value": "event_value_in_usd"
         }
     ]
 }

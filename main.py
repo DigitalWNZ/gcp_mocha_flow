@@ -88,8 +88,8 @@ def gen_sql(config_json):
     event_name_str=event_name_str[:-1] + ')'
     print(event_name_str)
 
-    list_agg_agg=df_event_agg['aggregation'].tolist()
-    list_agg_event_value=df_event_agg['event_value'].tolist()
+    list_agg_agg=df_event_agg['Aggregation'].tolist()
+    list_agg_event_value=df_event_agg['Event_value'].tolist()
     unnest=False
     for field in list_agg_event_value:
         if type(field) is dict:
@@ -252,18 +252,38 @@ def gen_sql(config_json):
             + 'and a.event_date=b.event_date'
     print('-----------------Daily transform-----------------')
     print(sql_str)
+    comment_str='--This script aggregate by day the events from users, who installed our apps in last N days.  \n' \
+               +'--Step 1: Run and validate the query below in bigquery \n' \
+               +'--Step 2: Create a daily schedule job(aka: schedule_job_A) to write the query result to table_A which contains results from all execution of the schedule job \n ' \
+               +'--so their will be duplicate records in table A, the dedup script is in dedup.sql. Save the name of table_A for usage in dedup.sql \n'
+
+    with open("daily_agg.sql", "w") as text_file:
+        text_file.write(comment_str + sql_str)
 
     # dedup
+    comment_str='--This script select distinct records from table_A which is the destination table in schedule_job_A \n'\
+               +'--Step 1: Change xxxxx in sql below to table_A . \n' \
+               +'--Step 2: Run and validate the query in bigquery \n' \
+               +'--Step 3: Create a schedule job(aka:schedule_job_B) to write the  deduped result to table_B, save the name of table_B for usage in rolling_sum.sql \n'
+
     dedup_sql_str = 'with mocha_with_dup as ( \n' \
                   + 'select *, \n' \
                   + 'row_number() over (partition by ' + universal_user_id + ',install_date, event_date order by collect_time desc) as rn \n' \
-                  + 'from xxxxx), \n' \
+                  + 'from `xxxxx`), \n' \
                   + 'select * except (rn,collect_time) \n ' \
                   + 'from mocha_with_dup \n ' \
                   + 'where rn = 1 '
+
+    with open("dedup.sql", "w") as text_file:
+        text_file.write(comment_str + dedup_sql_str)
     print('-----------------Daily dedup transform-----------------')
     print(dedup_sql_str)
     # sum as of today
+    comment_str='--This script calcualte the rolling_sum as of event_date for each event of each customer based on table_B which is the destination table in schedule_job_B. \n'\
+               +'--Step 1: Change xxxxx in sql below to table_B. \n' \
+               +'--Step 2: Run and validate the query in bigquery \n' \
+               +'--Step 3: Create a schedule job(aka:schedule_job_C) to write the query  result to table_C.\n'
+
     sum_sql_str='select \n' \
                + universal_user_id + ',\n' \
                + 'install_date,\n' \
@@ -283,10 +303,12 @@ def gen_sql(config_json):
 
     sum_sql_str = sum_sql_str \
                 + event_agg_str[:-2] + '\n' \
-                + 'from `' + config_json['daily_stat_table'] + '` \n' \
+                + 'from `xxxxx` \n' \
                 + 'order by ' + universal_user_id + ', event_date \n'
     print('-----------------Rolling sum transform-----------------')
     print(sum_sql_str)
+    with open("rolling_sum.sql", "w") as text_file:
+        text_file.write(comment_str + sum_sql_str)
 
 
 

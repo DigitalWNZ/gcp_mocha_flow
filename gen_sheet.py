@@ -72,8 +72,9 @@ if __name__ == '__main__':
         'select distinct event_name from `{}`'.format(table_name)
     )
     df_test = client.query(QUERY).result().to_dataframe()
-    df_test['aggregation'] = ''
-    df_test['event_value'] = ''
+    df_test['Description'] = ''
+    df_test['Aggregation'] = ''
+    df_test['Event_value'] = ''
     df_test.head(1)
 
     list_extra = ['table_name', 'event_date_field', 'event_name_field', 'universal_user_id', 'days_look_back',

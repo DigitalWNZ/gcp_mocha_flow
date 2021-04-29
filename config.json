@@ -1,25 +1,56 @@
 {
-	"table_name": "west-game-mocha.sample.mocha_sample_events",
-	"event_date_field": "event_date",
-	"event_name_field": "event_name",
-	"universal_user_id": "device.advertising_id",
-	"date_function": "current_date()",
-	"start_date": "",
-	"days_look_back":60,
-	"event_date_format": "YYYYMMDD",
-	"event_date_type": "",
-	"pay_events":["in_app_purchase"],
-	"login_events": ["session_start"],
-	"install_event": "first_open",
-	"event_aggregation":[
-		{"event_name":"in_app_purchase","aggregation":"sum_value","event_value": "event_value_in_usd","desc": "payment_event"},
-		{"event_name":"session_start","aggregation":"count","desc": "login_event"},
-		{"event_name":"screen_view","aggregation":"count"},
-		{"event_name":"shop_page_viewed","aggregation":"flag"},
-		{"event_name":"spend_virtual_currency","aggregation":"sum_value","event_value": {"key_field": "event_params.key","key_value": "value","value_field":"event_params.value.int_value"}}
-	],
-	"gen_schedule_job":"y",
-	"daily_stat_table": "allen-first.mocha_dataflow.daily_stat",
-	"daily_stat_table_dedup": "allen-first.mocha_dataflow.daily_stat_dedup",
-	"daily_sum_table":"allen-first.mocha_dataflow.daily_sum"
+    "table_name": "west-game-mocha.sample.mocha_sample_events",
+    "event_date_field": "event_date",
+    "event_name_field": "event_name",
+    "universal_user_id": "device.advertising_id",
+    "days_look_back": 60,
+    "event_date_format": "YYYYMMDD",
+    "pay_events": [
+        "in_app_purchase"
+    ],
+    "login_events": [
+        "session_start"
+    ],
+    "install_event": "first_open",
+    "start_date": "",
+    "date_function": "current_date()",
+    "event_date_type": "",
+    "event_aggregation": [
+        {
+            "event_name": "user_logged_in",
+            "Description": "",
+            "Aggregation": "flag"
+        },
+        {
+            "event_name": "session_start",
+            "Description": "",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "app_remove",
+            "Description": "",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "screen_view",
+            "Description": "",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "spend_virtual_currency",
+            "Description": "",
+            "Aggregation": "sum",
+            "Event_value": {
+                "key_field": "event_params.key",
+                "key_value": "value",
+                "value_field": "event_params.value.int_value"
+            }
+        },
+        {
+            "event_name": "in_app_purchase",
+            "Description": "",
+            "Aggregation": "sum",
+            "Event_value": "event_value_in_usd"
+        }
+    ]
 }
