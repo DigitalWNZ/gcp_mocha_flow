@@ -1,0 +1,9 @@
+event_date,event_name,event_info,deviceid,devide_platform
+1/1/20,en_1,"{""ep1"":""ep1_v"",""ep2"":""ep2_v"",""ep3"":""ep3_v""}",d1,Android
+2/1/20,en_2,"{""ep1"":""ep1_v"",""ep4"":""ep4_v"",""ep3"":""ep3_v""}",d2,ios
+3/1/20,en_3,"{""ep5"":""ep5_v"",""ep6"":""ep6_v"",""ep7"":""ep7_v""}",d3,Android
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,

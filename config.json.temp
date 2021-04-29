@@ -1,0 +1,50 @@
+{
+    "table_name": "west-game-mocha.sample.mocha_sample_events",
+    "event_date_field": "event_date",
+    "event_name_field": "event_name",
+    "universal_user_id": "device.advertising_id",
+    "days_look_back": 60,
+    "event_date_format": "YYYYMMDD",
+    "pay_events": [
+        "in_app_purchase"
+    ],
+    "login_events": [
+        "session_start"
+    ],
+    "install_event": "first_open",
+    "start_date": "",
+    "date_function": "current_date()",
+    "event_date_type": "",
+    "event_aggregation": [
+        {
+            "event_name": "user_logged_in",
+            "aggregation": "flag"
+        },
+        {
+            "event_name": "session_start",
+            "aggregation": "count"
+        },
+        {
+            "event_name": "app_remove",
+            "aggregation": "count"
+        },
+        {
+            "event_name": "screen_view",
+            "aggregation": "count"
+        },
+        {
+            "event_name": "spend_virtual_currency",
+            "aggregation": "sum",
+            "event_value": {
+                "key_field": "event_params.key",
+                "key_value": "value",
+                "value_field": "event_params.value.int_value"
+            }
+        },
+        {
+            "event_name": "in_app_purchase",
+            "aggregation": "sum",
+            "event_value": "event_value_in_usd"
+        }
+    ]
+}

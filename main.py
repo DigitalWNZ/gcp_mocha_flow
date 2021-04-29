@@ -1,0 +1,296 @@
+import os
+import json
+import sys
+import pandas as pd
+
+def parse_config():
+
+    with open('config.json') as f:
+        config_json=json.load(f)
+        # print(config_json)
+        return config_json
+
+def gen_sql(config_json):
+    event_window_table_name='event_window'
+    distinct_user_install_event='distinct_user_install_event'
+    distinct_user_install_event_with_next = 'distinct_user_install_event_with_next'
+    full_user_date='full_user_date'
+    data_flat_1='data_flat_1'
+    data_flat_2 = 'data_flat_2'
+    event_agg_by_day='event_agg_by_day'
+
+    days_look_back=config_json['days_look_back']
+    universal_user_id='universal_user_id'
+    # Generate the full date list
+    if config_json['start_date'] =='':
+        date_function=config_json['date_function']
+    else:
+        date_function='date(\'' + config_json['start_date'] + '\')'
+
+    sql_str='with ' + event_window_table_name + ' as ( \n'
+    i=0
+    while i <= days_look_back:
+        if i == 0:
+            sql_str += 'select ' + date_function + ' as event_date union all \n'
+        elif i == days_look_back:
+            sql_str += 'select date_sub(' + date_function + ', interval ' + str(i) + ' day) \n'
+        else:
+            sql_str += 'select date_sub(' + date_function + ', interval ' + str(i) + ' day) union all \n'
+        i+=1
+    sql_str += '), \n'
+    # Generate distinct user install event
+    if config_json['event_date_type'] == 'DATE':
+        date_str = config_json['event_date_field']
+    else:
+        if config_json['event_date_format']=='YYYYMMDD':
+            date_str= 'parse_date("%Y%m%d",' + config_json['event_date_field'] + ') '
+        else:
+            date_str='date(' + config_json['event_date_field'] + ') '
+
+    sql_str = sql_str \
+            + distinct_user_install_event +' as ( \nselect \ndistinct \n' \
+            + config_json[universal_user_id] + ' as ' +  universal_user_id + ', \n' \
+            + date_str + ' as install_date \n' \
+            + 'from `' + config_json['table_name'] + '` \n' \
+            + 'where ' + date_str + ' >= date_sub(' + date_function+ ', interval ' + str(days_look_back) + ' day) \n' \
+            + 'and ' + config_json['event_name_field'] + '= \'' + config_json['install_event'] + '\' \n' \
+            + '), \n'
+    # Generate distinct user install event with next
+    sql_str = sql_str \
+            + distinct_user_install_event_with_next + ' as ( \n' \
+            + 'select \n' \
+            + universal_user_id + ',' \
+            + 'install_date, \n' \
+            + 'ifnull(lag(install_date) over (partition by universal_user_id order by install_date desc),date(\'9999-12-31\')) as next_install_date, \n' \
+            + 'from ' + distinct_user_install_event + '\n' \
+            + '), \n'
+    # Cross join user_date and full_event_window
+    sql_str = sql_str \
+            + full_user_date + ' as ( \n' \
+            + 'select \n' \
+            + 'a.' + universal_user_id +', \n' \
+            + 'a.install_date, \n' \
+            + 'b.event_date \n' \
+            + 'from ' + distinct_user_install_event_with_next + ' a \n' \
+            + 'cross join ' + event_window_table_name + ' b \n' \
+            + 'where b.event_date >= a.install_date \n' \
+            + 'and b.event_date < a.next_install_date \n' \
+            + 'order by ' + universal_user_id + ', event_date \n' \
+            + '), \n'
+
+    # flat event_date
+    list_event_agg=config_json['event_aggregation']
+    df_event_agg=pd.DataFrame.from_records(list_event_agg)
+    list_agg_event_name= df_event_agg['event_name'].tolist()
+    event_name_str= '('
+    for x in list_agg_event_name:
+        event_name_str = event_name_str + '\''+ x + '\','
+    event_name_str=event_name_str[:-1] + ')'
+    print(event_name_str)
+
+    list_agg_agg=df_event_agg['aggregation'].tolist()
+    list_agg_event_value=df_event_agg['event_value'].tolist()
+    unnest=False
+    for field in list_agg_event_value:
+        if type(field) is dict:
+            unnest=True
+            event_value=field['value_field']
+            if event_value.find('.') == -1:
+                raise ValueError('field {} is not valid field in repeated column field '.format(event_value))
+    sql_str = sql_str \
+            + data_flat_1 + ' as ( \n' \
+            + 'select \n' \
+            + config_json[universal_user_id] + ' as ' +  universal_user_id + ', \n' \
+            + 'event_timestamp, \n' \
+            + 'event_name, \n' \
+            + date_str + ' as event_date, \n'
+    pay_events=config_json['pay_events']
+    login_events=config_json['login_events']
+    str_login='(\''
+    for login in login_events:
+        str_login = str_login \
+                  + login + '\','
+    str_login=str_login[:-1] + ')'
+    str_pay='(\''
+    for pay in pay_events:
+        str_pay = str_pay \
+                  + pay + '\','
+    str_pay=str_pay[:-1] + ')'
+    sql_str = sql_str \
+            + 'if (event_name in ' + str_login + ', 1 , 0) as login_flag, \n'\
+            +' if (event_name in ' + str_pay + ' , 1 , 0) as pay_flag, \n'
+    event_agg_str=''
+    list_alias=[]
+    key_value_str='('
+    for i in range(len(list_agg_event_name)):
+        event_name=list_agg_event_name[i]
+        event_agg=list_agg_agg[i]
+        event_value=list_agg_event_value[i]
+
+        if event_agg=='sum':
+            if type(event_value) is not dict:
+                alias=event_name + '__' + event_value
+                list_alias.append(alias)
+                event_agg_str = event_agg_str \
+                              + 'if (event_name=\'' + event_name + '\',' + event_value + ',null) as ' + alias + ',\n'
+            else:
+                event_value_key_field=event_value['key_field']
+                event_value_key_value=event_value['key_value']
+                key_value_str=key_value_str + '\'' + event_value_key_value + '\','
+                event_value_value=event_value['value_field']
+                alias=event_name + '__'+ event_value_key_value
+                list_alias.append(alias)
+                event_agg_str = event_agg_str \
+                                + 'if (event_name=\'' + event_name + '\' and ' + event_value_key_field + '=\'' + event_value_key_value + '\',' + event_value_value +  ',null) as ' +alias+ ',\n'
+        elif event_agg == 'count':
+            alias = event_name + '__count'
+            list_alias.append(alias)
+            event_agg_str = event_agg_str \
+                            + 'if (event_name=\'' + event_name + '\',1,0) as ' + alias + ',\n'
+        elif event_agg == 'flag':
+            alias = event_name + '__flag'
+            list_alias.append(alias)
+            event_agg_str = event_agg_str \
+                            + 'if (event_name=\'' + event_name + '\',1,0) as ' + alias + ',\n'
+        else:
+            raise ValueError('The aggregation {} is not supported')
+    key_value_str=key_value_str[:-1] + ')'
+    print(key_value_str)
+    if unnest:
+        table_str = 'from `' + config_json['table_name'] + '` ,unnest(event_params) as event_params \n' \
+                  + 'where ' + date_str + ' >= date_sub(' + date_function+ ', interval ' + str(days_look_back) + ' day) \n' \
+                  + 'and event_name in' + event_name_str + '\n'
+                  # + 'and event_params.key in' + key_value_str +'\n'
+    else:
+        table_str = 'from `' + config_json['table_name'] + '` \n' \
+                  + 'where ' + date_str + ' >= date_sub(' + date_function+ ', interval ' + str(days_look_back) + ' day) \n' \
+                  + 'and event_name in' + event_name_str + '\n'
+    # print(event_agg_str[:-3])
+    sql_str = sql_str \
+            + event_agg_str[:-2] + '\n' \
+            + table_str \
+            + '), \n'
+    # group flat data
+    if unnest:
+        sql_str = sql_str \
+                + data_flat_2 + ' as ( \n' \
+                + 'select \n' \
+                + universal_user_id + ', \n' \
+                + 'event_name, \n' \
+                + 'event_timestamp, \n' \
+                + 'event_date, \n' \
+                + 'max(login_flag) as login_flag, \n' \
+                + 'max(pay_flag) as pay_flag, \n'
+
+        event_agg_str=''
+        for i in range(len(list_agg_event_name)):
+            event_agg_str = event_agg_str \
+                          + 'max(' + list_alias[i] + ') as ' + list_alias[i] + ', \n'
+        sql_str = sql_str \
+                + event_agg_str[:-2] + '\n'   \
+                + 'from ' + data_flat_1 + '\n' \
+                + 'group by ' + universal_user_id + ', event_name, event_date,event_timestamp \n' \
+                + '), \n'
+
+    # event agg by day
+    sql_str = sql_str \
+            + event_agg_by_day+ ' as ( \n' \
+            + 'select \n' \
+            + universal_user_id + ',\n' \
+            + 'event_date, \n' \
+            + 'if(sum(login_flag)=0, 0,1) as login_flag, \n' \
+            + 'if(sum(pay_flag)=0, 0, 1 ) as pay_flag, \n'
+
+    event_agg_str = ''
+    for i in range(len(list_agg_event_name)):
+        event_name=list_agg_event_name[i]
+        event_agg=list_agg_agg[i]
+        event_value=list_agg_event_value[i]
+        if event_agg=='sum':
+            event_agg_str = event_agg_str \
+                          + 'ifnull(sum(case when event_name = ' + '\'' + event_name + '\' then ' + list_alias[i] + ' end),0) as ' + list_alias[i] + ',\n'
+        elif event_agg == 'count':
+            event_agg_str = event_agg_str \
+                            + 'ifnull(sum(case when event_name = ' + '\'' + event_name + '\' then ' + list_alias[i] + ' end),0) as ' + list_alias[i] + ',\n'
+        else:
+            event_agg_str = event_agg_str \
+                           + 'if(sum(case when event_name = ' + '\'' + event_name + '\' then ' + list_alias[i] + ' end)>0,1,0) as ' + list_alias[i] + ',\n'
+    table_str='from '
+    if unnest:
+        table_str = table_str \
+                  + data_flat_2 + '\n' \
+                  + 'group by ' + universal_user_id + ' ,event_date \n' \
+                  + ') \n'
+    else:
+        table_str = table_str \
+                  + data_flat_1 + '\n' \
+                  + 'group by ' + universal_user_id + ', event_date \n' \
+                  + ') \n'
+
+    sql_str = sql_str \
+            + event_agg_str[:-2] + '\n'  \
+            + table_str
+
+    # join with full_user_day
+    sql_str = sql_str \
+            + 'select \n' \
+            + 'a.*, \n' \
+            + 'ifnull(b.login_flag,0) as login_flag, \n' \
+            + 'ifnull(b.pay_flag,0) as pay_flag, \n '
+    event_agg_str=''
+    for i in range(len(list_agg_event_name)):
+        event_agg_str = event_agg_str \
+                      + 'ifnull(b.' +  list_alias[i] + ',0) as ' + list_alias[i] + ',\n'
+
+    # print(event_agg_str[:-2])
+    sql_str = sql_str \
+            + event_agg_str[:-2] + ',\n'  \
+            + 'current_timestamp() as collect_time \n' \
+            + 'from ' + full_user_date + ' a \n' \
+            + 'left join ' + event_agg_by_day + ' b \n' \
+            + 'on a.' + universal_user_id + '=b.' + universal_user_id + '\n' \
+            + 'and a.event_date=b.event_date'
+    print('-----------------Daily transform-----------------')
+    print(sql_str)
+
+    # dedup
+    dedup_sql_str = 'with mocha_with_dup as ( \n' \
+                  + 'select *, \n' \
+                  + 'row_number() over (partition by ' + universal_user_id + ',install_date, event_date order by collect_time desc) as rn \n' \
+                  + 'from xxxxx), \n' \
+                  + 'select * except (rn,collect_time) \n ' \
+                  + 'from mocha_with_dup \n ' \
+                  + 'where rn = 1 '
+    print('-----------------Daily dedup transform-----------------')
+    print(dedup_sql_str)
+    # sum as of today
+    sum_sql_str='select \n' \
+               + universal_user_id + ',\n' \
+               + 'install_date,\n' \
+               + 'event_date,\n' \
+               + 'login_flag, \n' \
+               + 'pay_flag, \n'
+
+    event_agg_str=''
+    for i in range(len(list_alias)):
+        event_agg=list_agg_agg[i]
+        if event_agg != 'flag':
+            event_agg_str = event_agg_str \
+                        + 'sum(' + list_alias[i] + ') over (partiton by ' + universal_user_id + ',event_date order by event_date asc rows unbounded preceding) as ' + list_alias[i]+'__sum,\n'
+        else:
+            event_agg_str = event_agg_str \
+                          + list_alias[i]+ ',\n'
+
+    sum_sql_str = sum_sql_str \
+                + event_agg_str[:-2] + '\n' \
+                + 'from `' + config_json['daily_stat_table'] + '` \n' \
+                + 'order by ' + universal_user_id + ', event_date \n'
+    print('-----------------Rolling sum transform-----------------')
+    print(sum_sql_str)
+
+
+
+
+if __name__ == '__main__':
+    config_json=parse_config()
+    sql_str=gen_sql(config_json)
