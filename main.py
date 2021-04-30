@@ -105,6 +105,15 @@ def gen_sql(config_json):
             + 'event_name, \n' \
             + date_str + ' as event_date, \n'
     pay_events=config_json['pay_events']
+
+    pay_event_in_aggregation=False
+    for pay_event in pay_events:
+        if pay_event in list_agg_event_name:
+            pay_event_in_aggregation=True
+            break
+    if not pay_event_in_aggregation:
+        raise ValueError('No aggregation is defined for any payment events')
+
     login_events=config_json['login_events']
     str_login='(\''
     for login in login_events:
