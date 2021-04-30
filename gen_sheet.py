@@ -18,7 +18,8 @@ def create_sheet(title, customer, data):
                    "sheets": list(map(lambda d: {"properties": {"title": d.get("title")}}, data))}
     res = sheets.create(body=create_body).execute()
     spreadsheet_id = res.get("spreadsheetId")
-
+    sheet_id=res.get("sheets")[0].get('properties').get("sheetId")
+    # print('1')
     def df_to_sheet(df):
         df_columns = [np.array(df.columns)]
         df_values = df.values.tolist()
@@ -27,10 +28,46 @@ def create_sheet(title, customer, data):
 
     update_body = {
         "valueInputOption": "RAW",
-        "data": list(map(lambda d: {"range": d.get("title"), "values": df_to_sheet(d.get("df"))}, data))
+        "data": list(map(lambda d: {"range": d.get("title"), "values": df_to_sheet(d.get("df"))}, data)),
     }
-
     sheets.values().batchUpdate(spreadsheetId=spreadsheet_id, body=update_body).execute()
+
+    request={
+        'requests': [
+            {
+                'setDataValidation': {
+                    'range': {
+                        'sheetId': sheet_id,
+                        'startRowIndex': 1,
+                        # 'endRowIndex': 1,
+                        'startColumnIndex': 2,
+                        'endColumnIndex': 3
+                    },
+                    'rule': {
+                        'condition': {
+                            'type': 'ONE_OF_LIST',
+                            'values': [
+                                {
+                                    'userEnteredValue': 'flag',
+                                },
+                                {
+                                    'userEnteredValue': 'sum',
+                                },
+                                {
+                                    'userEnteredValue': 'count',
+                                }
+                            ]
+                        },
+                        'showCustomUi': True,
+                        'strict': True
+                    }
+                }
+            }
+        ]
+    }
+    # request=json.dumps(request)
+    # print(request)
+    sheets.batchUpdate(spreadsheetId=spreadsheet_id, body=request).execute()
 
     print(res)
     return res
@@ -99,4 +136,4 @@ if __name__ == '__main__':
         "emailAddress": emailAddress
     }
     res = create_sheet("Mocha", "Test", data=data)
-    res = share_spreadsheet(res.get("spreadsheetId"), options=options, notify=True)
+    res = share_spreadsheet(res.get("spreadsheetId"), options=options, notify=False)
