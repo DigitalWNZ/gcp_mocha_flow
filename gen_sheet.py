@@ -91,6 +91,9 @@ if __name__ == '__main__':
     path_to_credential='/Users/wangez/Downloads/allen-first-9d553840c659.json'
     emailAddress= 'wangez@google.com'
     table_name='allen-first.mocha_dataflow.sample_data'
+    legacy_spreadsheet_id='1NYDd-Fx1ZVpP0x3S2Bt-nRDqfWMdMBZ1EeQNEm_CUTI'
+    legacy_sheet_id='1348826752'
+    search_ranges='A1:D1000'
 
     os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = path_to_credential
 
@@ -102,7 +105,6 @@ if __name__ == '__main__':
             "https://www.googleapis.com/auth/drive",
         ]
     )
-
 
     client = bigquery.Client()
     QUERY = (
@@ -119,6 +121,40 @@ if __name__ == '__main__':
     df_extra = pd.DataFrame({'params': list_extra})
     df_extra['value'] = ''
     df_extra.head(1)
+
+    if legacy_spreadsheet_id is not None or legacy_spreadsheet_id != '':
+        legacy_sheets_service = build("sheets", "v4", credentials=credentials)
+        legacy_sheets = legacy_sheets_service.spreadsheets()
+        legacy_input=legacy_sheets.values().get(spreadsheetId=legacy_spreadsheet_id,range=search_ranges).execute()
+        input_value=legacy_input.get('values',[])
+        if not input_value:
+            print('No data found in legacy google sheet')
+
+        df_legacy=pd.DataFrame(input_value[1:])
+        columns=input_value[0]
+        if len(df_legacy.columns) == len(columns):
+            df_legacy.columns=columns
+        else:
+            df_legacy.columns=['event_name','Description','Aggregation']
+            df_legacy['Event_value']=''
+
+        df_test=pd.merge(df_legacy,df_test,on='event_name',how='outer',suffixes=('_left','_right'))
+
+
+        def row_combine(row):
+            def first_valid_value(x, y):
+                if x is None:
+                    return y
+                else:
+                    return x
+            row['Description'] = first_valid_value(row['Description_left'],row['Description_right'])
+            row['Aggregation'] = first_valid_value(row['Aggregation_left'], row['Aggregation_right'])
+            row['Event_value'] = first_valid_value(row['Event_value_left'], row['Event_value_right'])
+            return row
+
+        df_test=df_test.apply(lambda row:row_combine(row),axis=1)
+        df_test=df_test[['event_name','Description','Aggregation','Event_value']]
+        df_test=df_test.replace(np.nan,'',regex=True)
 
     data = [
         {
