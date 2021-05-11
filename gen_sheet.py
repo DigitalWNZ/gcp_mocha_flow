@@ -93,7 +93,8 @@ if __name__ == '__main__':
     table_name='allen-first.mocha_dataflow.sample_data'
     legacy_spreadsheet_id='1NYDd-Fx1ZVpP0x3S2Bt-nRDqfWMdMBZ1EeQNEm_CUTI'
     legacy_sheet_id='1348826752'
-    search_ranges='A1:D1000'
+    search_ranges_1='Mocha Feature!A1:D1000'
+    search_ranges_2='Other Specification!A1:B50'
 
     os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = path_to_credential
 
@@ -125,7 +126,8 @@ if __name__ == '__main__':
     if legacy_spreadsheet_id is not None or legacy_spreadsheet_id != '':
         legacy_sheets_service = build("sheets", "v4", credentials=credentials)
         legacy_sheets = legacy_sheets_service.spreadsheets()
-        legacy_input=legacy_sheets.values().get(spreadsheetId=legacy_spreadsheet_id,range=search_ranges).execute()
+        #process the first tab
+        legacy_input=legacy_sheets.values().get(spreadsheetId=legacy_spreadsheet_id,range=search_ranges_1).execute()
         input_value=legacy_input.get('values',[])
         if not input_value:
             print('No data found in legacy google sheet')
@@ -157,6 +159,38 @@ if __name__ == '__main__':
         df_test=df_test.apply(lambda row:row_combine(row),axis=1)
         df_test=df_test[['event_name','Description','Aggregation','Event_value']]
         df_test=df_test.replace(np.nan,'',regex=True)
+
+        # Process the second tab
+        legacy_input_tab2=legacy_sheets.values().get(spreadsheetId=legacy_spreadsheet_id,range=search_ranges_2).execute()
+        input_value_tab2=legacy_input_tab2.get('values',[])
+        if not input_value_tab2:
+            print('No data found in legacy google sheet')
+
+        df_legacy_tab2=pd.DataFrame(input_value_tab2[1:])
+        columns_tab2=input_value_tab2[0]
+        if len(df_legacy_tab2.columns) == len(columns_tab2):
+            df_legacy_tab2.columns=columns_tab2
+        else:
+            df_legacy_tab2.columns=['params']
+            df_legacy_tab2['value']=''
+
+        df_extra=pd.merge(df_legacy_tab2,df_extra,on='params',how='outer',suffixes=('_left','_right'))
+
+
+        def row_combine(row):
+            def first_valid_value(x, y):
+                if x is None:
+                    return y
+                else:
+                    return x
+            row['value'] = first_valid_value(row['value_left'],row['value_right'])
+            return row
+
+        df_extra=df_extra.apply(lambda row:row_combine(row),axis=1)
+        df_extra=df_extra[['params','value']]
+        df_extra=df_extra.replace(np.nan,'',regex=True)
+
+
 
     data = [
         {
