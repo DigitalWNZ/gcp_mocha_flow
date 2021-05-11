@@ -149,6 +149,8 @@ if __name__ == '__main__':
                     return x
             row['Description'] = first_valid_value(row['Description_left'],row['Description_right'])
             row['Aggregation'] = first_valid_value(row['Aggregation_left'], row['Aggregation_right'])
+            if row['Aggregation']=='value':
+                row['Aggregation'] ='sum'
             row['Event_value'] = first_valid_value(row['Event_value_left'], row['Event_value_right'])
             return row
 
