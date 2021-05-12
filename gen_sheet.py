@@ -92,7 +92,7 @@ if __name__ == '__main__':
     path_to_credential='/Users/wangez/Downloads/allen-first-9d553840c659.json'
     emailAddress= 'wangez@google.com'
     table_name='allen-first.mocha_dataflow.sample_data'
-    legacy_spreadsheet_url='https://docs.google.com/spreadsheets/d/1NYDd-Fx1ZVpP0x3S2Bt-nRDqfWMdMBZ1EeQNEm_CUTI/edit#gid=1348826752'
+    legacy_spreadsheet_url=''
     # legacy_sheet_id='1348826752'
     search_ranges_1='Mocha Feature!A1:D1000'
     search_ranges_2='Other Specification!A1:B50'
