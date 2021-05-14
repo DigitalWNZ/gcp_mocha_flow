@@ -89,15 +89,16 @@ def share_spreadsheet(spreadsheet_id, options, notify=True):
     return res
 
 if __name__ == '__main__':
-    path_to_credential='/Users/wangez/Downloads/allen-first-9d553840c659.json'
-    emailAddress= 'wangez@google.com'
-    table_name='allen-first.mocha_dataflow.sample_data'
+    path_to_credential = '/Users/wangez/Downloads/pltv-310710-40916e8155a5.json'
+    emailAddress = 'wangez@google.com'
+    table_name = 'pltv-310710.lzy_ltv_test.pay_bq_record_test_*'
     legacy_spreadsheet_url=''
+    legacy_spreadsheet_id = ''
     # legacy_sheet_id='1348826752'
     search_ranges_1='Mocha Feature!A1:D1000'
     search_ranges_2='Other Specification!A1:B50'
 
-    if legacy_spreadsheet_url == '':
+    if legacy_spreadsheet_url != '':
         getid = '^.*/d/(.*)/.*$'
         pattern = re.compile(getid, re.IGNORECASE)
         legacy_spreadsheet_id= pattern.findall(legacy_spreadsheet_url)[0]
@@ -130,7 +131,7 @@ if __name__ == '__main__':
     df_extra['value'] = ''
     df_extra.head(1)
 
-    if legacy_spreadsheet_url is not None or legacy_spreadsheet_url != '':
+    if legacy_spreadsheet_url is not None and legacy_spreadsheet_url != '':
         legacy_sheets_service = build("sheets", "v4", credentials=credentials)
         legacy_sheets = legacy_sheets_service.spreadsheets()
         #process the first tab
