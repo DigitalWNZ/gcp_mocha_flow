@@ -97,10 +97,11 @@ if __name__ == '__main__':
     search_ranges_1='Mocha Feature!A1:D1000'
     search_ranges_2='Other Specification!A1:B50'
 
-    getid = '^.*/d/(.*)/.*$'
-    pattern = re.compile(getid, re.IGNORECASE)
-    legacy_spreadsheet_id= pattern.findall(legacy_spreadsheet_url)[0]
-    print(legacy_spreadsheet_id)
+    if legacy_spreadsheet_url == '':
+        getid = '^.*/d/(.*)/.*$'
+        pattern = re.compile(getid, re.IGNORECASE)
+        legacy_spreadsheet_id= pattern.findall(legacy_spreadsheet_url)[0]
+        print(legacy_spreadsheet_id)
 
     os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = path_to_credential
 
@@ -129,7 +130,7 @@ if __name__ == '__main__':
     df_extra['value'] = ''
     df_extra.head(1)
 
-    if legacy_spreadsheet_id is not None or legacy_spreadsheet_id != '':
+    if legacy_spreadsheet_url is not None or legacy_spreadsheet_url != '':
         legacy_sheets_service = build("sheets", "v4", credentials=credentials)
         legacy_sheets = legacy_sheets_service.spreadsheets()
         #process the first tab
