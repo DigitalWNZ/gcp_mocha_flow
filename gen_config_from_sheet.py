@@ -1,4 +1,5 @@
 import os
+import re
 import json
 import numpy as np
 import pandas as pd
@@ -37,7 +38,12 @@ if __name__ == '__main__':
     # emailAddress= 'wangez@google.com'
     # table_name='allen-first.mocha_dataflow.sample_data'
     path_to_credential = '/Users/wangez/Downloads/allen-first-9d553840c659.json'
-    sheet_id = '18-Mch32zJ_vSbsT-5cxvSfzOXgoXNgHljcIjglAx-B4'
+    sheet_url=''
+    getid = '^.*/d/(.*)/.*$'
+    pattern = re.compile(getid, re.IGNORECASE)
+    sheet_id = pattern.findall(sheet_url)[0]
+
+    # sheet_id = '18-Mch32zJ_vSbsT-5cxvSfzOXgoXNgHljcIjglAx-B4'
     range1 = 'Other Specification'
     range2= 'Mocha Feature'
     event_json = {}
