@@ -10,7 +10,7 @@ import googleapiclient
 import google.auth
 from datetime import date
 from oauth2client.service_account import ServiceAccountCredentials
-import gspread
+# import gspread
 
 def gsheet2json(gsheet):
 
@@ -24,11 +24,15 @@ def gsheet2json(gsheet):
             json_obj={}
             col_index = 0
             for col in row:
-                if row[col_index].find('{') == -1:
-                    json_obj[header[col_index]]=row[col_index]
+                if col_index < len(header):
+                    if row[col_index].find('{') == -1:
+                        json_obj[header[col_index]]=row[col_index]
+                    else:
+                        json_obj[header[col_index]] = json.loads(row[col_index])
+                    col_index += 1
                 else:
-                    json_obj[header[col_index]] = json.loads(row[col_index])
-                col_index += 1
+                    break
+
             all_data.append(json_obj)
 
     return all_data
@@ -37,8 +41,8 @@ if __name__ == '__main__':
 
     # emailAddress= 'wangez@google.com'
     # table_name='allen-first.mocha_dataflow.sample_data'
-    path_to_credential = '/Users/wangez/Downloads/allen-first-9d553840c659.json'
-    sheet_url=''
+    path_to_credential = '/Users/wangez/Downloads/allen-first-a3f52ad630d6.json'
+    sheet_url='https://docs.google.com/spreadsheets/d/1ArgVsUvRhAIDJy5KSM3jm14tmLE46wCIG37NaaWMcnY/edit?ts=60a76865#gid=1617533670'
     getid = '^.*/d/(.*)/.*$'
     pattern = re.compile(getid, re.IGNORECASE)
     sheet_id = pattern.findall(sheet_url)[0]

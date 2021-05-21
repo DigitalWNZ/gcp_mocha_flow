@@ -5,7 +5,7 @@ import pandas as pd
 
 def parse_config():
 
-    with open('config.json') as f:
+    with open('config.json.temp') as f:
         config_json=json.load(f)
         # print(config_json)
         return config_json

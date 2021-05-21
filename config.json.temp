@@ -1,12 +1,12 @@
 {
-    "table_name": "west-game-mocha.sample.mocha_sample_events",
+    "table_name": "`state-of-survival.gcp_ss.custom_events`",
     "event_date_field": "event_date",
     "event_name_field": "event_name",
-    "universal_user_id": "device.advertising_id",
+    "universal_user_id": "user_pseudo_id",
     "days_look_back": 60,
-    "event_date_format": "YYYYMMDD",
+    "event_date_format": "YYYY-MM-DD",
     "pay_events": [
-        "in_app_purchase"
+        "event_SS_Revenue"
     ],
     "login_events": [
         "session_start"
@@ -17,40 +17,1425 @@
     "event_date_type": "",
     "event_aggregation": [
         {
-            "event_name": "user_logged_in",
+            "event_name": "login_music_state",
+            "Description": "\u8bbe\u5907\u767b\u9646\u72b6\u6001",
+            "Aggregation": "flag",
+            "Event_value": ""
+        },
+        {
+            "event_name": "track_auth",
+            "Description": "idfa\u91c7\u96c6\u6388\u6743\u5f39\u6846",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "wd_daryl_unlock_new_buildings",
+            "Description": "\u5bfb\u627e\u5f29\u54e5\u7684\u89e3\u9501\u5efa\u7b51",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "intel_v2",
+            "Description": "\u4e8c\u671fintel",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "daily_reward",
+            "Description": "\u6bcf\u65e5\u4efb\u52a1\u5956\u52b1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "gold_event",
+            "Description": "\u89e3\u6bd2\u5242\u6d3b\u52a8",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "se_battle",
+            "Description": "se\u6218\u6597",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "gather",
+            "Description": "\u91c7\u96c6\u5b8c\u6210",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "custom_iap",
+            "Description": "\u793c\u5305",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "login_lord_gem",
+            "Description": "\u767b\u9646\u65f6\u73a9\u5bb6\u9886\u4e3b\u52cb\u7ae0\u72b6\u6001",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "month_card",
+            "Description": "\u6708\u5361",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "building_upgrade",
+            "Description": "\u5efa\u7b51\u5347\u7ea7",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "CMS",
+            "Description": "cms",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "Halloween_Candy",
+            "Description": "\u4e07\u5723\u8282\u7cd6\u679c\u6d3b\u52a8",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "lord_gem_verification_not_received",
+            "Description": "-------\u672a\u9886\u53d6\u79ef\u5206>\u53d1\u653e\u672a\u9886\u53d6\u5956\u52b1\u65f6\u5019\u8bb0\u5f55>\u540e\u7aef\u6253\u70b9",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "alliance_craft",
+            "Description": "\u8054\u76df\u4e89\u9738\u8d5b",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "score_special",
+            "Description": "\u79ef\u5206\u6d3b\u52a8",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "scout",
+            "Description": "\u4fa6\u5bdf",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "teleport",
+            "Description": "\u8fc1\u57ce",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "recharge_rebate",
+            "Description": " \u7d2f\u8ba1\u5145\u503c",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "gameLike",
+            "Description": "\u8bc4\u5206\u7cfb\u7edf",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "advance_research_upgrade",
+            "Description": "\u9ad8\u7ea7\u79d1\u7814\u5347\u7ea7",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "festival_daily_task",
+            "Description": "\u6bcf\u65e5\u4efb\u52a1\u6d3b\u52a8",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "change_equipment",
+            "Description": "\u65b0\u7684\u88c5\u5907\u903b\u8f91\uff08\u8865\u507f\uff09",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "ab_test",
+            "Description": "ab\u6d4b",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "kingdom_war_pve",
+            "Description": "\u738b\u6218pve",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "wd_user_get_quest_reward",
+            "Description": "wd\u7b54\u9898\u62bd\u5956\n",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "activity_festival_seven_days",
+            "Description": "\u8282\u65e5\u4e03\u5929\u6d3b\u52a8",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "iap_charge_continuous",
+            "Description": "\u8fde\u7eed\u5145\u503c",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "activity_plasma_scientific_prepare",
+            "Description": "\u9ad8\u7ea7\u79d1\u7814\u53cd\u9988\u4f18\u5316",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "questionnaire",
+            "Description": "\u95ee\u5377\u53d1\u653e",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "zombie_boss",
             "Description": "",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "remote_config",
+            "Description": "firebase\u6253\u70b9",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "alliance_shop",
+            "Description": "\u8054\u76df\u5546\u5e97",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "Stroy_Collect_Complete",
+            "Description": "\u70b9\u51fb\u6536\u96c6\u5b8c\u6210",
             "Aggregation": "flag"
         },
         {
-            "event_name": "session_start",
+            "event_name": "today_first_login",
+            "Description": "\u4eca\u5929\u7b2c\u4e00\u6b21\u767b\u5f55",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "activity_wd_seek",
+            "Description": "\u5bfb\u627e\u5f29\u54e5",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "honor_pass_2",
+            "Description": "\u65b0\u8282\u65e5\u5b63\u7968",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "train_troop_finish",
+            "Description": "\u8bad\u7ec3\u58eb\u5175\u5b8c\u6210",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "live_streaming",
+            "Description": "\u6e38\u620f\u76f4\u64ad",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "timer_chest_gain",
+            "Description": "\u5b9a\u65f6\u5b9d\u7bb1\u9886\u53d6",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "gold_event_season",
+            "Description": "\u5e9f\u571f\u4e4b\u738b-\u8d5b\u5b63",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "building_upgrade_finish",
+            "Description": "\u5efa\u7b51\u4fee\u5efa\u5b8c\u6210",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "quest_complete",
+            "Description": "\u4efb\u52a1\u5b8c\u6210",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "chapter_quest_complete",
+            "Description": "\u7ae0\u8282\u4efb\u52a1\u5b8c\u6210",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "upgrade_clue",
+            "Description": "\u5929\u9053\u5b9d\u7bb1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "dialog",
             "Description": "",
             "Aggregation": "count"
         },
         {
-            "event_name": "app_remove",
-            "Description": "",
+            "event_name": "leave_alliance",
+            "Description": "\u9000\u76df",
             "Aggregation": "count"
         },
         {
-            "event_name": "screen_view",
-            "Description": "",
+            "event_name": "survivor_support",
+            "Description": "\u82f1\u96c4\u63f4\u52a9",
             "Aggregation": "count"
         },
         {
-            "event_name": "spend_virtual_currency",
-            "Description": "",
+            "event_name": "lord_level_up",
+            "Description": "\u9886\u4e3b\u5347\u7ea7",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "localization_signin",
+            "Description": "\u7b7e\u5230\uff0c\u7b2c\u51e0\u65e5\uff0c\u662f\u5426\u8865\u7b7e\uff0c\u5956\u52b1list\n",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "analysis_center_war",
+            "Description": "\u4e3b\u6743\u5854",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "go_back_claim_login_reward",
+            "Description": "\u7d2f\u8ba1\u767b\u9646>\u9886\u5956\u65f6\u8bb0\u5f55>\u540e\u7aef\u6253\u70b9",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "go_back_claim_free_iap",
+            "Description": "\u56de\u5f52\u8d85\u503c\u793c\u5305>\u8d2d\u4e70\u514d\u8d39\u793c\u5305\u65f6\u8bb0\u5f55>\u540e\u7aef\u6253\u70b9",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "halloween_event",
+            "Description": "\u8282\u65e5\u79ef\u5206\u6d3b\u52a8",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "battle",
+            "Description": "\u6218\u6597",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "disband_alliance",
+            "Description": "\u89e3\u6563\u8054\u76df",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "gain_reward",
+            "Description": "\u9886\u53d6\u5956\u52b1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "combat",
+            "Description": "\u884c\u519b\u5230\u8fbe\u6218\u6597",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "alliance_help",
+            "Description": "\u8054\u76df\u5e2e\u52a9",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "vip",
+            "Description": "vip",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "research_finish",
+            "Description": "\u79d1\u6280\u7814\u7a76\u5b8c\u6210",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "login_lord_equipment",
+            "Description": "\u9886\u4e3b\u88c5\u5907\u72b6\u6001>\u767b\u9646\u8bb0\u5f55>\u540e\u7aef\u6253\u70b9",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "alliance_iap_gift",
+            "Description": "\u8054\u76df\u5b9d\u7bb1\u793c\u7269",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "buff_change",
+            "Description": "\u73a9\u5bb6benefit\u53d8\u5316",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "research_quest_complete",
+            "Description": "\u79d1\u7814\u4efb\u52a1\u5b8c\u6210",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "battle_gather",
+            "Description": "\u5f00\u59cb\u91c7\u96c6",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "talent_skill",
+            "Description": "\u91ca\u653e\u5929\u8d4b\u6280\u80fd",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "chapter_group_start",
+            "Description": "\u5f00\u59cb\u7ae0\u8282\u4efb\u52a1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "hidden_exploration",
+            "Description": "\u9690\u85cf\u526f\u672c",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "battle_monster",
+            "Description": "\u602a\u7269\u6218\u6597",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "join_alliance",
+            "Description": "\u8054\u76df\u52a0\u5165",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "world_line",
+            "Description": "\u4e16\u754c\u7ebf",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "localization_exchange_event",
+            "Description": "\u5956\u52b1\u5151\u6362\uff0c\u6863\u4f4did\uff0c\u5151\u6362\u6b21\u6570\uff0c\u83b7\u5f97\u5956\u52b1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "prosperity",
+            "Description": "\u57ce\u5e02\u7e41\u8363\u5ea6\u8bbe\u8ba1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "festival_region_pass",
+            "Description": "101\u5b63\u7968\u6d3b\u52a8",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "alliance_tech",
+            "Description": "\u8054\u76df\u79d1\u6280",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "chapter_group_complete",
+            "Description": "\u7ae0\u8282\u5b8c\u6210",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "go_back_sprint_quest_complete",
+            "Description": "\u56de\u6d41\u4efb\u52a1\u5b8c\u6210",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "activity_advance_research_five_days",
+            "Description": "\u9ad8\u7ea7\u79d1\u7814\u53cd\u9988\u4f18\u5316",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "alliance_request",
+            "Description": "-\u8054\u76df\u63a8\u8350\u5217\u8868\u8bf7\u6c42>\u5411\u4e2d\u53f0\u62c9\u53d6\u8054\u76df\u5217\u8868\u53cd\u9988\u65f6\u8bb0\u5f55>\u540e\u7aef\u6253\u70b9",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "alliance_mark",
+            "Description": "\u8054\u76df\u6807\u8bb0",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "explore_loading",
+            "Description": "\u63a2\u7d22\u52a0\u8f7d",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "dress_up",
+            "Description": "\u88c5\u626e",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "exchange_code",
+            "Description": "\u5151\u6362\u7801",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "dismiss_troop",
+            "Description": "\u90e8\u961f\u89e3\u6563",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "go_back",
+            "Description": "\u56de\u6d41",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "fresher_pease_shield",
+            "Description": "\u65b0\u624b\u4fdd\u62a4\u7f69\u7834\u7f69",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "user_agreement",
+            "Description": "\u540c\u610f\u7528\u6237\u534f\u8bae",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "world_event_season_sign",
+            "Description": "\u4e16\u754c\u4e8b\u4ef6\u9884\u70ed-\u7b7e\u5230",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "week_card",
+            "Description": "\u5468\u5361",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "activity_survivor_seven_days",
+            "Description": "\u8054\u643a\u82f1\u96c4\u4e03\u65e5\u6d3b\u52a8",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "supplememt_tropps_base",
+            "Description": "\u8865\u5175",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "activity_red_packet",
+            "Description": "\u7ea2\u5305\u6d3b\u52a8",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "battle_power_change",
+            "Description": "\u73a9\u5bb6\u6218\u529b\u53d8\u5316",
             "Aggregation": "sum",
             "Event_value": {
                 "key_field": "event_params.key",
-                "key_value": "value",
+                "key_value": "change_power",
                 "value_field": "event_params.value.int_value"
             }
         },
         {
-            "event_name": "in_app_purchase",
+            "event_name": "wd_daryl_get_reward",
+            "Description": "-------\u5bfb\u627e\u5f29\u54e5>\u73a9\u5bb6\u5b8c\u6210\u7ebf\u7d22\u540e\u9886\u53d6\u5956\u52b1>\u540e\u7aef\u6253\u70b9",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "avaleague_quest",
+            "Description": "\u6c34\u6e90\u8054\u8d5b\u4efb\u52a1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "city_buff",
+            "Description": "\u57ce\u5efabuff",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "big_timer_chest",
+            "Description": "\u5f00\u542f\u5b9d\u7bb1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "survivor_unlock",
+            "Description": "\u82f1\u96c4\u89e3\u9501",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "custom_iap_2",
+            "Description": "\u81ea\u9009\u793c\u53052\u4ee3",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "hero_drop",
+            "Description": "\u82f1\u96c4\u672c\u8272\u8054\u52a8-\u6389\u843d\u6d3b\u52a8",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "tutorial_ex",
             "Description": "",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "unlock_city_block_v3",
+            "Description": "\u4e09\u671f\u5730\u5757\u89e3\u9501",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "exchange_survivor_chip",
+            "Description": "\u82f1\u96c4\u788e\u7247\u5151\u6362",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "kingdom_war",
+            "Description": "\u738b\u6218",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "plasma_building_prepare",
+            "Description": "\u7b49\u79bb\u5b50\u5efa\u7b51\u6d3b\u52a8",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "gameStoreScore",
+            "Description": "\u5546\u5e97\u8bc4\u4ef7",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "growth_fund",
+            "Description": "\u6210\u957f\u57fa\u91d1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "kvk",
+            "Description": "\u8de8\u670d\u738b\u6218",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "wd_user_draw_real_reward",
+            "Description": "wd\u9ad8\u7ea7\u5b9d\u7bb1\u83b7\u53d6\u5b9e\u7269",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "kvk_recuperate",
+            "Description": "\u4f11\u517b\u751f\u606f",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "heal_troop",
+            "Description": "\u4f24\u5175\u533b\u9662\u6cbb\u7597",
+            "Aggregation": "flag"
+        },
+        {
+            "event_name": "donate",
+            "Description": "\u8054\u76df\u79d1\u6280\u6350\u732e",
             "Aggregation": "sum",
-            "Event_value": "event_value_in_usd"
+            "Event_value": {
+                "key_field": "event_params.key",
+                "key_value": "tot_times",
+                "value_field": "event_params.value.int_value"
+            }
+        },
+        {
+            "event_name": "ask_alliance_help",
+            "Description": "\u8bf7\u6c42\u8054\u76df\u597d\u53cb\u5e2e\u52a9",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "view_other_city",
+            "Description": "\u67e5\u770b\u522b\u4eba\u7684\u57ce",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "alliance_boss",
+            "Description": "\u8054\u76dfboss",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "survivor_search",
+            "Description": "\u53ec\u5524\u82f1\u96c4",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "reward_center",
+            "Description": "\u5956\u52b1\u4e2d\u5fc3",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "alliance_donate_rank",
+            "Description": "\u8054\u76df\u6350\u732e\u9886\u5956",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "survivor",
+            "Description": "\u82f1\u96c4\uff08\u5403\u7ecf\u9a8c\u4e66\uff0c\u5347\u7ea7\u6280\u80fd\uff0c\u5347\u7ea7\uff0c\u5347\u9636\uff0c\u91cd\u7f6e\uff09",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "user_vault",
+            "Description": "\u5b58\u6b3e\uff0c\u53d6\u6b3e",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "poison_land",
+            "Description": "\u6bd2\u7624",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "battle_pvp_detail",
+            "Description": "pvp\u6218\u6597\u8be6\u60c5",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "seven_day",
+            "Description": "\u4e03\u5929\u8fde\u7eed\u767b\u9646",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "chapter_quest_gain_quest_reward",
+            "Description": "\u7ae0\u8282\u4efb\u52a1\u5956\u52b1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "zombie_invasion",
+            "Description": "\u4e27\u5c38\u5165\u4fb5",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "exploration",
+            "Description": "\u82f1\u96c4\u63a2\u9669",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "lord_equipment_gem_power",
+            "Description": "\u9886\u4e3b\u52cb\u7ae0\u6218\u529b\u53d8\u5316",
+            "Aggregation": "sum",
+            "Event_value": {
+                "key_field": "event_params.key",
+                "key_value": "change_power",
+                "value_field": "event_params.value.int_value"
+            }
+        },
+        {
+            "event_name": "IapPaymentSuccess",
+            "Description": "\u793c\u5305\u8d2d\u4e70\u6210\u529f",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "survivor_camp",
+            "Description": "\u82f1\u96c4\u8bad\u7ec3\u8425",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "hide_troop",
+            "Description": "\u85cf\u5175",
+            "Aggregation": "sum",
+            "Event_value": {
+                "key_field": "event_params.key",
+                "key_value": "hided_troops_power",
+                "value_field": "event_params.value.int_value"
+            }
+        },
+        {
+            "event_name": "europe_policy",
+            "Description": "",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "micro_com",
+            "Description": "",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "activity_daily_iap_accumulative_reward",
+            "Description": "\u6bcf\u65e5\u793c\u5305\u7d2f\u5145\u6d3b\u52a8",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "halloween_candy",
+            "Description": "\u4e07\u5723\u8282\u7cd6\u679c\u6d3b\u52a8",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "powerup",
+            "Description": "",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "roguelike",
+            "Description": "\u5f52\u5bb6\u5f02\u9014SE",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "claim_sprint_box_reward",
+            "Description": "\u56de\u6d41\u4efb\u52a1\u5b9d\u7bb1\u9886\u5956",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "go_back_new_world",
+            "Description": "\u56de\u6d41\u53bb\u5f80\u65b0\u4e16\u754c",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "unlock_city_block",
+            "Description": "\u89e3\u9501\u5730\u5757",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "supplememt_tropps",
+            "Description": "\u8865\u5175",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "loading",
+            "Description": "loading\u52a0\u8f7d",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "city_decoration",
+            "Description": "\u57ce\u5185\u88c5\u9970",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "stamina",
+            "Description": "\u89e3\u6bd2\u5242\u53d8\u5316\uff08+-\uff09",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "big_turntable",
+            "Description": "\u5927\u8f6c\u76d8",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "wd_daryl_new_clue_gained",
+            "Description": "\u5bfb\u627e\u5f29\u54e5\u4e2d\u73a9\u5bb6\u83b7\u53d6\u7ebf\u7d22",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "train_troop",
+            "Description": "\u8bad\u7ec3\u58eb\u5175\uff08\u5f00\u59cb\uff0c\u7acb\u5373\u5b8c\u6210\uff09",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "story",
+            "Description": "\u5267\u60c5\u60c5\u62a5",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "research_upgrade",
+            "Description": "\u79d1\u6280\u7814\u7a76\u5f00\u59cb",
+            "Aggregation": "flag"
+        },
+        {
+            "event_name": "alliance_speedup",
+            "Description": "\u8054\u76df\u52a0\u901f",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "custom_iap_3",
+            "Description": "\u81ea\u9009\u4e09\u4ee3",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "shop",
+            "Description": "\u5546\u5e97",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "login",
+            "Description": "\u767b\u5f55",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "cheat_user",
+            "Description": "\u8bb0\u5f55\u662f\u5426\u5728\u7ebf",
+            "Aggregation": "flag"
+        },
+        {
+            "event_name": "kingdom_event",
+            "Description": "\u5929\u4e0b\u5927\u52bf",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "world_event",
+            "Description": "\u4e16\u754c\u4e8b\u4ef6",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "quest_gain_reward",
+            "Description": "\u4efb\u52a1\u5b8c\u6210\u9886\u53d6\u5956\u52b1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "payment_submit_order",
+            "Description": "\u793c\u5305\u8d2d\u4e70\u70b9\u51fb\u6253\u70b9",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "chapter_quest_gain_group_reward",
+            "Description": "\u7ae0\u8282\u5956\u52b1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "survivor_will",
+            "Description": "\u5e78\u5b58\u8005\u7684\u610f\u5fd7",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "forge_equipment",
+            "Description": "\u9886\u4e3b\u88c5\u5907\u5408\u6210",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "alliance_zone",
+            "Description": "\u8054\u76df\u9886\u5730",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "survivor_summon",
+            "Description": "\u82f1\u96c4\u5408\u6210",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "city_fire",
+            "Description": "\u57ce\u7740\u706b",
+            "Aggregation": "flag"
+        },
+        {
+            "event_name": "buy_month_card",
+            "Description": "\u4e70\u6708\u5361",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "survivor_link",
+            "Description": "\u82f1\u96c4\u5b9e\u529b\u5171\u4eab\u7cfb\u7edf",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "create_alliance",
+            "Description": "\u521b\u5efa\u8054\u76df",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "iap_exchange",
+            "Description": "\u7b49\u79bb\u5b50\u6750\u6599\u5151\u6362",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "super_exchange",
+            "Description": "\u8d85\u503c\u5151\u6362",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "charge_first_pass",
+            "Description": "\u9996\u5145\u5b63\u7968",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "switch_kingdom",
+            "Description": "\u65b0\u5efa\u7528\u6237\u65f6\uff0c\u9009\u670d",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "activity_gift",
+            "Description": "\u9001\u793c\u6d3b\u52a8",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "tutorial",
+            "Description": "\u65b0\u624b\u5f15\u5bfc",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "survivor_equipment",
+            "Description": "\u82f1\u96c4\u88c5\u5907",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "npc_store",
+            "Description": "\u5c0f\u644a\u8d29\u5546\u5e97",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "wd_user_answer_question",
+            "Description": "WD\u7b54\u9898\u7684\u73a9\u5bb6\u7b54\u9898\u7ed3\u679c",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "alliance_mobilization",
+            "Description": "\u8054\u76df\u603b\u52a8\u5458",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "intelligence_stamina",
+            "Description": "\u63a2\u9669\u89e3\u6bd2\u5242\u53d8\u5316",
+            "Aggregation": "sum",
+            "Event_value": {
+                "key_field": "event_params.key",
+                "key_value": "change",
+                "value_field": "event_params.value.int_value"
+            }
+        },
+        {
+            "event_name": "dynamic_recommend_iap",
+            "Description": "\u7279\u60e0\u793c\u5305\uff08\u5468\u5361\u6708\u5361\uff09",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "upgrade_troop",
+            "Description": "\u5175\u79cd\u5347\u7ea7",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "MarchLine_Click",
+            "Description": "\u884c\u519b\u7ebf\u4f18\u5316",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "login_survivor_equipment",
+            "Description": "\u767b\u9646\u65f6\u82f1\u96c4\u88c5\u5907\u72b6\u6001",
+            "Aggregation": "flag"
+        },
+        {
+            "event_name": "c",
+            "Description": "\u73a9\u5bb6\u88c5\u5907\u79ef\u5206",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "fallen_knight",
+            "Description": "\u4e27\u5931\u5165\u4fb5",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "fallen_knight_defend_success",
+            "Description": "\u4e27\u5931\u5165\u4fb5\u9632\u5fa1\u6210\u529f",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "battle_gve",
+            "Description": "gve\u6218\u6597",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "user_gem",
+            "Description": "\u9886\u4e3b\u52cb\u7ae0",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "puzzle_pve",
+            "Description": "\u89e3\u8c1c\u526f\u672c\u73a9\u6cd5",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "lord_equipment_power",
+            "Description": "\u9886\u4e3b\u88c5\u5907\u6218\u529b\u53d8\u5316",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "hunter_house",
+            "Description": "\u730e\u4eba\u5c0f\u5c4b\uff08\u7279\u62c9\u7ef4\u65af\uff09",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "cultivate",
+            "Description": "\u4e16\u754c\u4e8b\u4ef6\u517b\u6210\u7cfb\u7edf",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "plasma_cannon",
+            "Description": "\u7b49\u79bb\u5b50\u70ae",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "go_back_claim_sprint_quest_reward",
+            "Description": "\u56de\u6d41\u4efb\u52a1\u9886\u5956",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "storyline",
+            "Description": "\u5f00\u573aTimeline\u6539\u7248\uff08Puzzle \u7248\uff09",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "iap_trigger",
+            "Description": "wonder-\u89e6\u53d1\u793c\u5305",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "wounded_reward",
+            "Description": "\u6218\u6597\u635f\u5931",
+            "Aggregation": "sum",
+            "Event_value": {
+                "key_field": "event_params.key",
+                "key_value": "lost_power",
+                "value_field": "event_params.value.int_value"
+            }
+        },
+        {
+            "event_name": "advance_research_finish",
+            "Description": "\u9ad8\u7ea7\u79d1\u7814\u7814\u7a76\u5b8c\u6210",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "go_back_user_info",
+            "Description": "\u56de\u6d41\u73a9\u5bb6\u4fe1\u606f",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "festival_pass",
+            "Description": "\u8282\u65e5\u79ef\u5206\u5b63\u7968\u6d3b\u52a8",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "wd_daryl_clue_compose",
+            "Description": "\u5bfb\u627e\u5f29\u54e5\u7684\u4e3b\u7ebf\u7d22\u5408\u6210",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "payment_pay_type",
+            "Description": "\u8d8a\u5357\u5305\u652f\u4ed8\u65b9\u5f0f\u52a8\u6001\u5207\u6362\u529f\u80fd",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "user_skill",
+            "Description": "\u653b\u57ce\u6280\u80fd",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "walking_dead_event",
+            "Description": "Walking Dead\u6536\u96c6\u518c",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "mini_wonder_war",
+            "Description": "\u5c0f\u5947\u8ff9",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "faq1.0",
+            "Description": "FAQ",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "buy_week_card",
+            "Description": "\u8d2d\u4e70\u5468\u5361",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "stronghold_level_reward",
+            "Description": "\u9886\u53d6\u4e3b\u57ce\u7b49\u7ea7\u89e3\u9501\u5956\u52b1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "world_event_memorial_book_abyss",
+            "Description": "\u8d5b\u5b63\u7eaa\u5ff5\u518c",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "festival_wish",
+            "Description": "\u8bb8\u613f\u6d3b\u52a8",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "festival_collection",
+            "Description": "\u5723\u8bde\u96c6\u661f\u661f\u6d3b\u52a8",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "focus_out",
+            "Description": "\u7a0b\u5e8f\u9000\u5230\u540e\u53f0",
+            "Aggregation": "flag"
+        },
+        {
+            "event_name": "MonthCard",
+            "Description": "\u6708\u5361",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "focus_in",
+            "Description": "\u7a0b\u5e8f\u8fdb\u5165\u5230\u524d\u53f0",
+            "Aggregation": "flag"
+        },
+        {
+            "event_name": "activity_limit_time_discount_shop",
+            "Description": "\u9650\u65f6\u6298\u6263\u5546\u5e97\u6d3b\u52a8",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "micro_com1.1",
+            "Description": "",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "go_back_claim_sprint_task_reward",
+            "Description": "",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "march",
+            "Description": "\u884c\u519b",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "transaction",
+            "Description": "\u9053\u5177\u548c\u8d44\u6e90\u53d8\u5316\u6253\u70b9",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "festival_boss",
+            "Description": "\u8282\u65e5boss",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "wd_collection",
+            "Description": "WD\u8054\u52a8-\u6536\u96c6\u518c-\u5f69\u86cb",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "avaleague",
+            "Description": "\u6c34\u6e90\u8054\u8d5b\u540d\u5355\u8c03\u6574",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "avaleague_guess",
+            "Description": "\u6c34\u6e90\u8054\u8d5b\u7ade\u731c",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "exchange_gifts",
+            "Description": "\u6625\u8282\u751f\u8096\u6d3b\u52a8",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "auto_fix_date",
+            "Description": "\u4fee\u6b63\u57ce\u5efa\u6570\u636e",
+            "Aggregation": "flag"
+        },
+        {
+            "event_name": "festival_navigation",
+            "Description": "\u5468\u5e74\u5e86\u65e5\u5386",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "lord_gem_verification_attack_boss_finish",
+            "Description": "\u9886\u4e3b\u52cb\u7ae0\u9a8c\u8bc1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "open_fallen_knight",
+            "Description": "\u8054\u76df\u4e27\u5c38\u5165\u4fb5\uff08\u9ed1\u9a91\u58eb/\u611f\u67d3\u8005\u5165\u4fb5",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "lord_gem_verification_quest_complete",
+            "Description": "\u9886\u4e3b\u52cb\u7ae0\u9a8c\u8bc1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "action",
+            "Description": "",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "anti_addiction",
+            "Description": "sdk\u7684\u5b9e\u540d\u8ba4\u8bc1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "climbing_tower",
+            "Description": "\u5468\u5e74\u722c\u5854\u6d3b\u52a8",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "festival_story",
+            "Description": "\u8282\u65e5\u6545\u4e8b\u6d3b\u52a8",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "new_big_turntable",
+            "Description": "\u3010\u82f1\u96c4\u6295\u653e\u3011\u65b0\u5927\u5bcc\u7fc1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "festival_zodiac_collect",
+            "Description": "2020\u6625\u8282\u6536\u96c6\u6d3b\u52a8",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "startDailyQuestBI",
+            "Description": "\u57ce\u5e02\u5c45\u6c11\u7b54\u9898\u7cfb\u7edf",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "lord_gem_verification_attack_boss_start",
+            "Description": "\u9886\u4e3b\u52cb\u7ae0\u9a8c\u8bc1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "lord_gem_verification_combat_ready_receive",
+            "Description": "\u9886\u4e3b\u52cb\u7ae0\u9a8c\u8bc1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "abyss",
+            "Description": "\u4e16\u754c\u4e8b\u4ef6-\u6df1\u6e0a\u73a9\u6cd5",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "honor_pass",
+            "Description": "\u5b63\u7968",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "hero_flip_card_over",
+            "Description": "\u82f1\u96c4\u7ffb\u7ffb\u4e50",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "launch_start",
+            "Description": "\u542f\u52a8\u5f00\u59cb",
+            "Aggregation": "flag"
+        },
+        {
+            "event_name": "lord_gem_verification_quest_receive",
+            "Description": "\u9886\u4e3b\u52cb\u7ae0\u9a8c\u8bc1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "activity_festival_equip_seven_days",
+            "Description": "\u9886\u4e3b\u88c5\u5907\u8fed\u4ee37\u65e5\u6d3b\u52a8",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "lord_gem_verification_rank",
+            "Description": "\u9886\u4e3b\u52cb\u7ae0\u9a8c\u8bc1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "world_open",
+            "Description": "\u5f00\u670d",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "season_climb_tower",
+            "Description": "\u8d5b\u5b63\u722c\u5854\u73a9\u6cd5",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "treasure_discover",
+            "Description": "\u6316\u5b9d\u6d3b\u52a8\u73a9\u6cd5",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "noteBookWithoutAlliance",
+            "Description": "\u5bfb\u627e\u7279\u62c9\u7ef4\u65af",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "throne_shock_relocation",
+            "Description": "\u738b\u6218-\u7535\u95ea\u96f7\u9e23",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "lord_gem_verification_buff_change",
+            "Description": "\u9886\u4e3b\u52cb\u7ae0\u9a8c\u8bc1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "friend_list_option",
+            "Description": "\u597d\u53cb\u7cfb\u7edf",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "festival_pass_2",
+            "Description": "\u8282\u65e5\u5b63\u79682",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "submitDailyQuestBI",
+            "Description": "\u57ce\u5e02\u5c45\u6c11\u7b54\u9898\u7cfb\u7edf",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "exchange_event",
+            "Description": "\u4e07\u5723\u8282\u79ef\u5206\u6d3b\u52a8",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "invite_new_user",
+            "Description": "ptr\u670d-\u6b63\u5f0f\u670d\u6765\u6e90uid",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "start_gather_march",
+            "Description": "\u884c\u519b\u91c7\u96c6",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "activity_recycle",
+            "Description": "\u56de\u6536\u6d3b\u52a8",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "achievement",
+            "Description": "\u6210\u5c31",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "session_start",
+            "Description": "\u767b\u5f55",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "dialog_skip",
+            "Description": "",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "lord_gem_verification_ready_open",
+            "Description": "\u9886\u4e3b\u52cb\u7ae0\u9a8c\u8bc1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "lord_gem_verification_score_quest_complete",
+            "Description": "\u9886\u4e3b\u52cb\u7ae0\u9a8c\u8bc1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "world_event_memorial_book_kvk",
+            "Description": "\u8d5b\u5b63\u7eaa\u5ff5\u518c",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "equipment_signin",
+            "Description": "\u9886\u4e3b\u88c5\u5907\u7b7e\u5230",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "daily_sign_in",
+            "Description": "\u6bcf\u65e5\u7b7e\u5230",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "ava",
+            "Description": "\u76df\u6218",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "session_en\u3688",
+            "Description": "\u5e9f\u5f03\u6253\u70b9",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "super_exchange_2",
+            "Description": "\u8d85\u7ea7\u5151\u63622",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "wd_lottery",
+            "Description": "wd\u9ad8\u7ea7\u5b9d\u7bb1\u62bd\u5956",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "service_monitoring",
+            "Description": "",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "alliance_trade",
+            "Description": "\u8054\u76df\u8d38\u6613",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "activity_drop",
+            "Description": "\u6389\u843d\u6d3b\u52a8",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "session_end",
+            "Description": "\u767b\u51fa",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "lord_gem_verification_ready_score_change",
+            "Description": "\u9886\u4e3b\u52cb\u7ae0\u9a8c\u8bc1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "event_SS_Revenue",
+            "Description": "\u5145\u503c\u82b1\u8d39",
+            "Aggregation": "sum",
+            "Event_value": {
+                "key_field": "event_params.key",
+                "key_value": "value_in_usd",
+                "value_field": "event_params.value.double_value"
+            }
+        },
+        {
+            "event_name": "first_open",
+            "Description": "\u5b89\u88c5",
+            "Aggregation": "flag"
         }
     ]
 }
