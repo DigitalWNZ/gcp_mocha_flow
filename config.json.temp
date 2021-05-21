@@ -83,11 +83,6 @@
             "Aggregation": "count"
         },
         {
-            "event_name": "Halloween_Candy",
-            "Description": "\u4e07\u5723\u8282\u7cd6\u679c\u6d3b\u52a8",
-            "Aggregation": "count"
-        },
-        {
             "event_name": "lord_gem_verification_not_received",
             "Description": "-------\u672a\u9886\u53d6\u79ef\u5206>\u53d1\u653e\u672a\u9886\u53d6\u5956\u52b1\u65f6\u5019\u8bb0\u5f55>\u540e\u7aef\u6253\u70b9",
             "Aggregation": "count"
@@ -1383,7 +1378,7 @@
             "Aggregation": "count"
         },
         {
-            "event_name": "session_en\u3688",
+            "event_name": "session_en",
             "Description": "\u5e9f\u5f03\u6253\u70b9",
             "Aggregation": "count"
         },

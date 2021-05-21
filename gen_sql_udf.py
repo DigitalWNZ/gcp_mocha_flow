@@ -27,7 +27,30 @@ def gen_sql(config_json):
     else:
         date_function='date(\'' + config_json['start_date'] + '\')'
 
-    sql_str='with ' + event_window_table_name + ' as ( \n'
+    sql_str ='CREATE TEMP FUNCTION\n'  \
+            +'abstract_params(input_arr Array<struct<key string, value struct<string_value string, int_value int64, float_value float64, double_value float64>>>, key_value string,value_field string)\n' \
+            + 'RETURNS int64\n' \
+            + 'LANGUAGE js AS r"""\n' \
+            + ' ret=0\n' \
+            + ' var i=input_arr.length;\n' \
+            + ' while(i--){\n' \
+            + '     if (input_arr[i].key===key_value) {\n' \
+            + '         if (value_field === \'event_params.value.int_value\') {\n' \
+            + '             ret=input_arr[i].value.double_value;\n' \
+            + '             i=0;\n' \
+            + '         } else if (value_field === \'event_params.value.float_value\') {\n' \
+            + '             ret=input_arr[i].value.float_value;\n' \
+            + '             i=0\n' \
+            + '         } else {\n'\
+            + '             ret=input_arr[i].value.double_value;\n' \
+            + '             i=0\n' \
+            + '         }\n' \
+            + '     }\n'\
+            + ' }\n' \
+            + ' return ret;\n' \
+            + '""";\n'
+    sql_str=sql_str \
+           + 'with ' + event_window_table_name + ' as ( \n'
     i=0
     while i <= days_look_back:
         if i == 0:
@@ -47,14 +70,24 @@ def gen_sql(config_json):
         else:
             date_str='date(' + config_json['event_date_field'] + ') '
 
+    # sql_str = sql_str \
+    #         + distinct_user_install_event +' as ( \nselect \ndistinct \n' \
+    #         + config_json[universal_user_id] + ' as ' +  universal_user_id + ', \n' \
+    #         + date_str + ' as install_date \n' \
+    #         + 'from `' + config_json['table_name'].replace('`','')+ '` \n' \
+    #         + 'where ' + date_str + ' >= date_sub(' + date_function+ ', interval ' + str(days_look_back) + ' day) \n' \
+    #         + 'and ' + config_json['event_name_field'] + '= \'' + config_json['install_event'] + '\' \n' \
+    #         + '), \n'
+
     sql_str = sql_str \
-            + distinct_user_install_event +' as ( \nselect \ndistinct \n' \
+            + distinct_user_install_event +' as ( \nselect \n' \
             + config_json[universal_user_id] + ' as ' +  universal_user_id + ', \n' \
-            + date_str + ' as install_date \n' \
+            + date_str + ' as install_date, \n' \
+            + 'count(0) \n' \
             + 'from `' + config_json['table_name'].replace('`','')+ '` \n' \
             + 'where ' + date_str + ' >= date_sub(' + date_function+ ', interval ' + str(days_look_back) + ' day) \n' \
             + 'and ' + config_json['event_name_field'] + '= \'' + config_json['install_event'] + '\' \n' \
-            + '), \n'
+            + 'group by 1,2), \n'
     # Generate distinct user install event with next
     sql_str = sql_str \
             + distinct_user_install_event_with_next + ' as ( \n' \
@@ -91,10 +124,10 @@ def gen_sql(config_json):
 
     list_agg_agg=df_event_agg['Aggregation'].tolist()
     list_agg_event_value=df_event_agg['Event_value'].tolist()
-    unnest=False
+    # unnest=False
     for field in list_agg_event_value:
         if type(field) is dict:
-            unnest=True
+            # unnest=True
             event_value=field['value_field']
             if event_value.find('.') == -1:
                 raise ValueError('field {} is not valid field in repeated column field '.format(event_value))
@@ -102,9 +135,10 @@ def gen_sql(config_json):
             + data_flat_1 + ' as ( \n' \
             + 'select \n' \
             + config_json[universal_user_id] + ' as ' +  universal_user_id + ', \n' \
-            + 'event_timestamp, \n' \
             + 'event_name, \n' \
             + date_str + ' as event_date, \n'
+            # + 'event_timestamp, \n' \
+
     pay_events=config_json['pay_events']
 
     pay_event_in_aggregation=False
@@ -151,7 +185,7 @@ def gen_sql(config_json):
                 alias=event_name + '__'+ event_value_key_value
                 list_alias.append(alias)
                 event_agg_str = event_agg_str \
-                                + 'if (event_name=\'' + event_name + '\' and ' + event_value_key_field + '=\'' + event_value_key_value + '\',' + event_value_value +  ',null) as ' +alias+ ',\n'
+                                + 'if (event_name=\'' + event_name + '\', abstract_params(event_params,\'' + event_value_key_value + '\',\'' + event_value_value +  '\') ,null) as ' +alias+ ',\n'
         elif event_agg == 'count':
             alias = event_name + '__count'
             list_alias.append(alias)
@@ -166,41 +200,41 @@ def gen_sql(config_json):
             raise ValueError('The aggregation {} is not supported')
     key_value_str=key_value_str[:-1] + ')'
     print(key_value_str)
-    if unnest:
-        table_str = 'from `' + config_json['table_name'].replace('`','') + '` ,unnest(event_params) as event_params \n' \
-                  + 'where ' + date_str + ' >= date_sub(' + date_function+ ', interval ' + str(days_look_back) + ' day) \n' \
-                  + 'and event_name in' + event_name_str + '\n'
-                  # + 'and event_params.key in' + key_value_str +'\n'
-    else:
-        table_str = 'from `' + config_json['table_name'].replace('`','') + '` \n' \
-                  + 'where ' + date_str + ' >= date_sub(' + date_function+ ', interval ' + str(days_look_back) + ' day) \n' \
-                  + 'and event_name in' + event_name_str + '\n'
+    # if unnest:
+    #     table_str = 'from `' + config_json['table_name'].replace('`','') + '` ,unnest(event_params) as event_params \n' \
+    #               + 'where ' + date_str + ' >= date_sub(' + date_function+ ', interval ' + str(days_look_back) + ' day) \n' \
+    #               + 'and event_name in' + event_name_str + '\n'
+    #               # + 'and event_params.key in' + key_value_str +'\n'
+    # else:
+    table_str = 'from `' + config_json['table_name'].replace('`','') + '` \n' \
+              + 'where ' + date_str + ' >= date_sub(' + date_function+ ', interval ' + str(days_look_back) + ' day) \n' \
+              + 'and event_name in' + event_name_str + '\n'
     # print(event_agg_str[:-3])
     sql_str = sql_str \
             + event_agg_str[:-2] + '\n' \
             + table_str \
             + '), \n'
     # group flat data
-    if unnest:
-        sql_str = sql_str \
-                + data_flat_2 + ' as ( \n' \
-                + 'select \n' \
-                + universal_user_id + ', \n' \
-                + 'event_name, \n' \
-                + 'event_timestamp, \n' \
-                + 'event_date, \n' \
-                + 'max(login_flag) as login_flag, \n' \
-                + 'max(pay_flag) as pay_flag, \n'
-
-        event_agg_str=''
-        for i in range(len(list_agg_event_name)):
-            event_agg_str = event_agg_str \
-                          + 'max(' + list_alias[i] + ') as ' + list_alias[i] + ', \n'
-        sql_str = sql_str \
-                + event_agg_str[:-2] + '\n'   \
-                + 'from ' + data_flat_1 + '\n' \
-                + 'group by ' + universal_user_id + ', event_name, event_date,event_timestamp \n' \
-                + '), \n'
+    # if unnest:
+    #     sql_str = sql_str \
+    #             + data_flat_2 + ' as ( \n' \
+    #             + 'select \n' \
+    #             + universal_user_id + ', \n' \
+    #             + 'event_name, \n' \
+    #             + 'event_timestamp, \n' \
+    #             + 'event_date, \n' \
+    #             + 'max(login_flag) as login_flag, \n' \
+    #             + 'max(pay_flag) as pay_flag, \n'
+    #
+    #     event_agg_str=''
+    #     for i in range(len(list_agg_event_name)):
+    #         event_agg_str = event_agg_str \
+    #                       + 'max(' + list_alias[i] + ') as ' + list_alias[i] + ', \n'
+    #     sql_str = sql_str \
+    #             + event_agg_str[:-2] + '\n'   \
+    #             + 'from ' + data_flat_1 + '\n' \
+    #             + 'group by ' + universal_user_id + ', event_name, event_date,event_timestamp \n' \
+    #             + '), \n'
 
     # event agg by day
     sql_str = sql_str \
@@ -226,16 +260,16 @@ def gen_sql(config_json):
             event_agg_str = event_agg_str \
                            + 'if(sum(case when event_name = ' + '\'' + event_name + '\' then ' + list_alias[i] + ' end)>0,1,0) as ' + list_alias[i] + ',\n'
     table_str='from '
-    if unnest:
-        table_str = table_str \
-                  + data_flat_2 + '\n' \
-                  + 'group by ' + universal_user_id + ' ,event_date \n' \
-                  + ') \n'
-    else:
-        table_str = table_str \
-                  + data_flat_1 + '\n' \
-                  + 'group by ' + universal_user_id + ', event_date \n' \
-                  + ') \n'
+    # if unnest:
+    #     table_str = table_str \
+    #               + data_flat_2 + '\n' \
+    #               + 'group by ' + universal_user_id + ' ,event_date \n' \
+    #               + ') \n'
+    # else:
+    table_str = table_str \
+              + data_flat_1 + '\n' \
+              + 'group by ' + universal_user_id + ', event_date \n' \
+              + ') \n'
 
     sql_str = sql_str \
             + event_agg_str[:-2] + '\n'  \
