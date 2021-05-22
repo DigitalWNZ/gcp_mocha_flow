@@ -28,17 +28,17 @@ def gen_sql(config_json):
         date_function='date(\'' + config_json['start_date'] + '\')'
 
     sql_str ='CREATE TEMP FUNCTION\n'  \
-            +'abstract_params(input_arr Array<struct<key string, value struct<string_value string, int_value int64, float_value float64, double_value float64>>>, key_value string,value_field string)\n' \
+            +'abstract_params(input_arr Array<struct<key string, value struct<string_value string, int_value int64, float_value float64, double_value float64>>>, key_value string,value_field int64)\n' \
             + 'RETURNS int64\n' \
             + 'LANGUAGE js AS r"""\n' \
             + ' ret=0\n' \
             + ' var i=input_arr.length;\n' \
             + ' while(i--){\n' \
             + '     if (input_arr[i].key===key_value) {\n' \
-            + '         if (value_field === \'event_params.value.int_value\') {\n' \
-            + '             ret=input_arr[i].value.double_value;\n' \
+            + '         if (value_field === 1) {\n' \
+            + '             ret=input_arr[i].value.int_value;\n' \
             + '             i=0;\n' \
-            + '         } else if (value_field === \'event_params.value.float_value\') {\n' \
+            + '         } else if (value_field === 2) {\n' \
             + '             ret=input_arr[i].value.float_value;\n' \
             + '             i=0\n' \
             + '         } else {\n'\
@@ -182,10 +182,16 @@ def gen_sql(config_json):
                 event_value_key_value=event_value['key_value']
                 key_value_str=key_value_str + '\'' + event_value_key_value + '\','
                 event_value_value=event_value['value_field']
+                if event_value_value == 'event_params.value.int_value':
+                    event_value_value=1
+                elif event_value_value == 'event_params.value.float_value':
+                    event_value_value=2
+                else:
+                    event_value_value = 3
                 alias=event_name + '__'+ event_value_key_value
                 list_alias.append(alias)
                 event_agg_str = event_agg_str \
-                                + 'if (event_name=\'' + event_name + '\', abstract_params(event_params,\'' + event_value_key_value + '\',\'' + event_value_value +  '\') ,null) as ' +alias+ ',\n'
+                                + 'if (event_name=\'' + event_name + '\', abstract_params(event_params,\'' + event_value_key_value + '\',' + str(event_value_value) +  ') ,null) as ' +alias+ ',\n'
         elif event_agg == 'count':
             alias = event_name + '__count'
             list_alias.append(alias)
@@ -352,7 +358,7 @@ def gen_sql(config_json):
         event_name=list_agg_event_name[i]
         if event_agg != 'flag' and event_name not in pay_events:
             event_agg_str = event_agg_str \
-                        + 'sum(' + list_alias[i] + ') over (partiton by ' + universal_user_id + ',event_date order by event_date asc rows unbounded preceding) as ' + list_alias[i]+'__sum,\n'
+                        + 'sum(' + list_alias[i] + ') over (partition by ' + universal_user_id + ',event_date order by event_date asc rows unbounded preceding) as ' + list_alias[i]+'__sum,\n'
         else:
             event_agg_str = event_agg_str \
                           + list_alias[i]+ ',\n'

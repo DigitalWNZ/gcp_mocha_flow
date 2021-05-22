@@ -3,17 +3,17 @@
 --Step 2: Create a daily schedule job(aka: schedule_job_A) to write the query result to table_A which contains results from all execution of the schedule job 
  --so their will be duplicate records in table A, the dedup script is in dedup.sql. Save the name of table_A for usage in dedup.sql 
 CREATE TEMP FUNCTION
-abstract_params(input_arr Array<struct<key string, value struct<string_value string, int_value int64, float_value float64, double_value float64>>>, key_value string,value_field string)
+abstract_params(input_arr Array<struct<key string, value struct<string_value string, int_value int64, float_value float64, double_value float64>>>, key_value string,value_field int64)
 RETURNS int64
 LANGUAGE js AS r"""
  ret=0
  var i=input_arr.length;
  while(i--){
      if (input_arr[i].key===key_value) {
-         if (value_field === 'event_params.value.int_value') {
-             ret=input_arr[i].value.double_value;
+         if (value_field === 1) {
+             ret=input_arr[i].value.int_value;
              i=0;
-         } else if (value_field === 'event_params.value.float_value') {
+         } else if (value_field === 2) {
              ret=input_arr[i].value.float_value;
              i=0
          } else {
@@ -213,7 +213,7 @@ if (event_name='week_card',1,0) as week_card__count,
 if (event_name='activity_survivor_seven_days',1,0) as activity_survivor_seven_days__count,
 if (event_name='supplememt_tropps_base',1,0) as supplememt_tropps_base__count,
 if (event_name='activity_red_packet',1,0) as activity_red_packet__count,
-if (event_name='battle_power_change', abstract_params(event_params,'change_power','event_params.value.int_value') ,null) as battle_power_change__change_power,
+if (event_name='battle_power_change', abstract_params(event_params,'change_power',1) ,null) as battle_power_change__change_power,
 if (event_name='wd_daryl_get_reward',1,0) as wd_daryl_get_reward__count,
 if (event_name='avaleague_quest',1,0) as avaleague_quest__count,
 if (event_name='city_buff',1,0) as city_buff__count,
@@ -232,7 +232,7 @@ if (event_name='kvk',1,0) as kvk__count,
 if (event_name='wd_user_draw_real_reward',1,0) as wd_user_draw_real_reward__count,
 if (event_name='kvk_recuperate',1,0) as kvk_recuperate__count,
 if (event_name='heal_troop',1,0) as heal_troop__flag,
-if (event_name='donate', abstract_params(event_params,'tot_times','event_params.value.int_value') ,null) as donate__tot_times,
+if (event_name='donate', abstract_params(event_params,'tot_times',1) ,null) as donate__tot_times,
 if (event_name='ask_alliance_help',1,0) as ask_alliance_help__count,
 if (event_name='view_other_city',1,0) as view_other_city__count,
 if (event_name='alliance_boss',1,0) as alliance_boss__count,
@@ -247,10 +247,10 @@ if (event_name='seven_day',1,0) as seven_day__count,
 if (event_name='chapter_quest_gain_quest_reward',1,0) as chapter_quest_gain_quest_reward__count,
 if (event_name='zombie_invasion',1,0) as zombie_invasion__count,
 if (event_name='exploration',1,0) as exploration__count,
-if (event_name='lord_equipment_gem_power', abstract_params(event_params,'change_power','event_params.value.int_value') ,null) as lord_equipment_gem_power__change_power,
+if (event_name='lord_equipment_gem_power', abstract_params(event_params,'change_power',1) ,null) as lord_equipment_gem_power__change_power,
 if (event_name='IapPaymentSuccess',1,0) as IapPaymentSuccess__count,
 if (event_name='survivor_camp',1,0) as survivor_camp__count,
-if (event_name='hide_troop', abstract_params(event_params,'hided_troops_power','event_params.value.int_value') ,null) as hide_troop__hided_troops_power,
+if (event_name='hide_troop', abstract_params(event_params,'hided_troops_power',1) ,null) as hide_troop__hided_troops_power,
 if (event_name='europe_policy',1,0) as europe_policy__count,
 if (event_name='micro_com',1,0) as micro_com__count,
 if (event_name='activity_daily_iap_accumulative_reward',1,0) as activity_daily_iap_accumulative_reward__count,
@@ -297,7 +297,7 @@ if (event_name='survivor_equipment',1,0) as survivor_equipment__count,
 if (event_name='npc_store',1,0) as npc_store__count,
 if (event_name='wd_user_answer_question',1,0) as wd_user_answer_question__count,
 if (event_name='alliance_mobilization',1,0) as alliance_mobilization__count,
-if (event_name='intelligence_stamina', abstract_params(event_params,'change','event_params.value.int_value') ,null) as intelligence_stamina__change,
+if (event_name='intelligence_stamina', abstract_params(event_params,'change',1) ,null) as intelligence_stamina__change,
 if (event_name='dynamic_recommend_iap',1,0) as dynamic_recommend_iap__count,
 if (event_name='upgrade_troop',1,0) as upgrade_troop__count,
 if (event_name='MarchLine_Click',1,0) as MarchLine_Click__count,
@@ -315,7 +315,7 @@ if (event_name='plasma_cannon',1,0) as plasma_cannon__count,
 if (event_name='go_back_claim_sprint_quest_reward',1,0) as go_back_claim_sprint_quest_reward__count,
 if (event_name='storyline',1,0) as storyline__count,
 if (event_name='iap_trigger',1,0) as iap_trigger__count,
-if (event_name='wounded_reward', abstract_params(event_params,'lost_power','event_params.value.int_value') ,null) as wounded_reward__lost_power,
+if (event_name='wounded_reward', abstract_params(event_params,'lost_power',1) ,null) as wounded_reward__lost_power,
 if (event_name='advance_research_finish',1,0) as advance_research_finish__count,
 if (event_name='go_back_user_info',1,0) as go_back_user_info__count,
 if (event_name='festival_pass',1,0) as festival_pass__count,
@@ -394,7 +394,7 @@ if (event_name='alliance_trade',1,0) as alliance_trade__count,
 if (event_name='activity_drop',1,0) as activity_drop__count,
 if (event_name='session_end',1,0) as session_end__count,
 if (event_name='lord_gem_verification_ready_score_change',1,0) as lord_gem_verification_ready_score_change__count,
-if (event_name='event_SS_Revenue', abstract_params(event_params,'value_in_usd','event_params.value.double_value') ,null) as event_SS_Revenue__value_in_usd,
+if (event_name='event_SS_Revenue', abstract_params(event_params,'value_in_usd',3) ,null) as event_SS_Revenue__value_in_usd,
 if (event_name='first_open',1,0) as first_open__flag
 from `state-of-survival.gcp_ss.custom_events` 
 where date(event_date)  >= date_sub(current_date(), interval 60 day) 
