@@ -10,12 +10,18 @@ import googleapiclient
 import google.auth
 from datetime import date
 from oauth2client.service_account import ServiceAccountCredentials
+from collections import Counter
 # import gspread
 
 def gsheet2json(gsheet):
 
     header = gsheet.get('values', [])[0]   # Assumes first line is header!
     values = gsheet.get('values', [])[1:]  # Everything else is data.
+    list_event_name = [i[0].lower() for i in values]
+    set_event_name = set(list_event_name)
+    if len(list_event_name) != len(set_event_name):
+        raise ValueError('There are duplicate event name in the template, please check the data. ')
+
     if not values:
         print('No data found.')
     else:
