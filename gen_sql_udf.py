@@ -325,21 +325,21 @@ def gen_sql(config_json):
     dedup_sql_str = 'with mocha_with_dup as ( \n' \
                   + 'select *, \n' \
                   + 'row_number() over (partition by ' + universal_user_id +',' + user_id + ',install_date, event_date order by collect_time desc) as rn \n' \
-                  + 'from `xxxxx`), \n' \
+                  + 'from `xxxxx`) \n' \
                   + 'select * except (rn,collect_time) \n ' \
                   + 'from mocha_with_dup \n ' \
                   + 'where rn = 1 '
-    dedup_sql_str= 'with daily_agg as ( \n ' \
-                  + 'select ' + universal_user_id + ',' + user_id + ',install_date,event_date, \n' \
-                  +'array_agg(src order by ' + universal_user_id + ',' + user_id + ',install_date,event_date desc limit 1)[offset(0)].* except(' \
-                  + universal_user_id + ',' + user_id + ',install_date,event_date) \n' \
-                  + 'from `xxxxx` src group by 1,2,3) \n' \
-                  + 'select * from daily_agg'
+    # dedup_sql_str= 'with daily_agg as ( \n ' \
+    #               + 'select ' + universal_user_id + ',' + user_id + ',install_date,event_date, \n' \
+    #               +'array_agg(src order by ' + universal_user_id + ',' + user_id + ',install_date,event_date desc limit 1)[offset(0)].* except(' \
+    #               + universal_user_id + ',' + user_id + ',install_date,event_date) \n' \
+    #               + 'from `xxxxx` src group by 1,2,3,4) \n' \
+    #               + 'select * from daily_agg'
 
-    dedup_sql_str= 'select ' + universal_user_id + ',' + user_id + ',install_date,event_date, \n' \
-                  +'array_agg(src order by ' + universal_user_id +',' + user_id + ',install_date,event_date desc limit 1)[offset(0)].* except(' \
-                  + universal_user_id + ',' + user_id + ',install_date,event_date) \n' \
-                  + 'from `xxxxx` src group by 1,2,3'
+    # dedup_sql_str= 'select ' + universal_user_id + ',' + user_id + ',install_date,event_date, \n' \
+    #               +'array_agg(src order by ' + universal_user_id +',' + user_id + ',install_date,event_date desc limit 1)[offset(0)].* except(' \
+    #               + universal_user_id + ',' + user_id + ',install_date,event_date) \n' \
+    #               + 'from `xxxxx` src group by 1,2,3,4'
 
     with open("dedup.sql", "w") as text_file:
         text_file.write(comment_str + dedup_sql_str)

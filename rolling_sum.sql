@@ -144,7 +144,6 @@ sum(hide_troop__hided_troops_power) over (partition by universal_user_id,event_d
 sum(europe_policy__count) over (partition by universal_user_id,event_date order by event_date asc rows unbounded preceding) as europe_policy__count__sum,
 sum(micro_com__count) over (partition by universal_user_id,event_date order by event_date asc rows unbounded preceding) as micro_com__count__sum,
 sum(activity_daily_iap_accumulative_reward__count) over (partition by universal_user_id,event_date order by event_date asc rows unbounded preceding) as activity_daily_iap_accumulative_reward__count__sum,
-sum(halloween_candy__count) over (partition by universal_user_id,event_date order by event_date asc rows unbounded preceding) as halloween_candy__count__sum,
 sum(powerup__count) over (partition by universal_user_id,event_date order by event_date asc rows unbounded preceding) as powerup__count__sum,
 sum(roguelike__count) over (partition by universal_user_id,event_date order by event_date asc rows unbounded preceding) as roguelike__count__sum,
 sum(claim_sprint_box_reward__count) over (partition by universal_user_id,event_date order by event_date asc rows unbounded preceding) as claim_sprint_box_reward__count__sum,
