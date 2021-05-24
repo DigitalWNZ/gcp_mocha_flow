@@ -125,7 +125,7 @@ if __name__ == '__main__':
     df_test['Event_value'] = ''
     df_test.head(1)
 
-    list_extra = ['table_name', 'event_date_field', 'event_name_field', 'universal_user_id', 'days_look_back',
+    list_extra = ['table_name', 'event_date_field', 'event_name_field', 'universal_user_id', 'user_id','days_look_back',
                   'event_date_format', 'pay_events', 'login_events', 'install_event','start_date','date_function','event_date_type']
     df_extra = pd.DataFrame({'params': list_extra})
     df_extra['value'] = ''

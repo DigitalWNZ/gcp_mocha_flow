@@ -90,32 +90,35 @@ select date_sub(current_date(), interval 60 day)
 distinct_user_install_event as ( 
 select 
 user_pseudo_id as universal_user_id, 
+user_id as user_id, 
 date(event_date)  as install_date, 
 count(0) 
 from `state-of-survival.gcp_ss.custom_events` 
 where date(event_date)  >= date_sub(current_date(), interval 60 day) 
 and event_name= 'first_open' 
-group by 1,2), 
+group by 1,2,3), 
 distinct_user_install_event_with_next as ( 
 select 
-universal_user_id,install_date, 
+universal_user_id,user_id,install_date, 
 ifnull(lag(install_date) over (partition by universal_user_id order by install_date desc),date('9999-12-31')) as next_install_date, 
 from distinct_user_install_event
 ), 
 full_user_date as ( 
 select 
 a.universal_user_id, 
+a.user_id, 
 a.install_date, 
 b.event_date 
 from distinct_user_install_event_with_next a 
 cross join event_window b 
 where b.event_date >= a.install_date 
 and b.event_date < a.next_install_date 
-order by universal_user_id, event_date 
+order by universal_user_id,user_id, event_date 
 ), 
 data_flat_1 as ( 
 select 
 user_pseudo_id as universal_user_id, 
+user_id as  user_id, 
 event_name, 
 date(event_date)  as event_date, 
 if (event_name in ('session_start'), 1 , 0) as login_flag, 
@@ -133,6 +136,7 @@ if (event_name='login_lord_gem',1,0) as login_lord_gem__count,
 if (event_name='month_card',1,0) as month_card__count,
 if (event_name='building_upgrade',1,0) as building_upgrade__count,
 if (event_name='CMS',1,0) as CMS__count,
+if (event_name='Halloween_Candy',1,0) as Halloween_Candy__count,
 if (event_name='lord_gem_verification_not_received',1,0) as lord_gem_verification_not_received__count,
 if (event_name='alliance_craft',1,0) as alliance_craft__count,
 if (event_name='score_special',1,0) as score_special__count,
@@ -398,11 +402,11 @@ if (event_name='event_SS_Revenue', abstract_params(event_params,'value_in_usd',3
 if (event_name='first_open',1,0) as first_open__flag
 from `state-of-survival.gcp_ss.custom_events` 
 where date(event_date)  >= date_sub(current_date(), interval 60 day) 
-and event_name in('login_music_state','track_auth','wd_daryl_unlock_new_buildings','intel_v2','daily_reward','gold_event','se_battle','gather','custom_iap','login_lord_gem','month_card','building_upgrade','CMS','lord_gem_verification_not_received','alliance_craft','score_special','scout','teleport','recharge_rebate','gameLike','advance_research_upgrade','festival_daily_task','change_equipment','ab_test','kingdom_war_pve','wd_user_get_quest_reward','activity_festival_seven_days','iap_charge_continuous','activity_plasma_scientific_prepare','questionnaire','zombie_boss','remote_config','alliance_shop','Stroy_Collect_Complete','today_first_login','activity_wd_seek','honor_pass_2','train_troop_finish','live_streaming','timer_chest_gain','gold_event_season','building_upgrade_finish','quest_complete','chapter_quest_complete','upgrade_clue','dialog','leave_alliance','survivor_support','lord_level_up','localization_signin','analysis_center_war','go_back_claim_login_reward','go_back_claim_free_iap','halloween_event','battle','disband_alliance','gain_reward','combat','alliance_help','vip','research_finish','login_lord_equipment','alliance_iap_gift','buff_change','research_quest_complete','battle_gather','talent_skill','chapter_group_start','hidden_exploration','battle_monster','join_alliance','world_line','localization_exchange_event','prosperity','festival_region_pass','alliance_tech','chapter_group_complete','go_back_sprint_quest_complete','activity_advance_research_five_days','alliance_request','alliance_mark','explore_loading','dress_up','exchange_code','dismiss_troop','go_back','fresher_pease_shield','user_agreement','world_event_season_sign','week_card','activity_survivor_seven_days','supplememt_tropps_base','activity_red_packet','battle_power_change','wd_daryl_get_reward','avaleague_quest','city_buff','big_timer_chest','survivor_unlock','custom_iap_2','hero_drop','tutorial_ex','unlock_city_block_v3','exchange_survivor_chip','kingdom_war','plasma_building_prepare','gameStoreScore','growth_fund','kvk','wd_user_draw_real_reward','kvk_recuperate','heal_troop','donate','ask_alliance_help','view_other_city','alliance_boss','survivor_search','reward_center','alliance_donate_rank','survivor','user_vault','poison_land','battle_pvp_detail','seven_day','chapter_quest_gain_quest_reward','zombie_invasion','exploration','lord_equipment_gem_power','IapPaymentSuccess','survivor_camp','hide_troop','europe_policy','micro_com','activity_daily_iap_accumulative_reward','halloween_candy','powerup','roguelike','claim_sprint_box_reward','go_back_new_world','unlock_city_block','supplememt_tropps','loading','city_decoration','stamina','big_turntable','wd_daryl_new_clue_gained','train_troop','story','research_upgrade','alliance_speedup','custom_iap_3','shop','login','cheat_user','kingdom_event','world_event','quest_gain_reward','payment_submit_order','chapter_quest_gain_group_reward','survivor_will','forge_equipment','alliance_zone','survivor_summon','city_fire','buy_month_card','survivor_link','create_alliance','iap_exchange','super_exchange','charge_first_pass','switch_kingdom','activity_gift','tutorial','survivor_equipment','npc_store','wd_user_answer_question','alliance_mobilization','intelligence_stamina','dynamic_recommend_iap','upgrade_troop','MarchLine_Click','login_survivor_equipment','c','fallen_knight','fallen_knight_defend_success','battle_gve','user_gem','puzzle_pve','lord_equipment_power','hunter_house','cultivate','plasma_cannon','go_back_claim_sprint_quest_reward','storyline','iap_trigger','wounded_reward','advance_research_finish','go_back_user_info','festival_pass','wd_daryl_clue_compose','payment_pay_type','user_skill','walking_dead_event','mini_wonder_war','faq1_0','buy_week_card','stronghold_level_reward','world_event_memorial_book_abyss','festival_wish','festival_collection','focus_out','MonthCard','focus_in','activity_limit_time_discount_shop','micro_com1_1','go_back_claim_sprint_task_reward','march','transaction','festival_boss','wd_collection','avaleague','avaleague_guess','exchange_gifts','auto_fix_date','festival_navigation','lord_gem_verification_attack_boss_finish','open_fallen_knight','lord_gem_verification_quest_complete','action','anti_addiction','climbing_tower','festival_story','new_big_turntable','festival_zodiac_collect','startDailyQuestBI','lord_gem_verification_attack_boss_start','lord_gem_verification_combat_ready_receive','abyss','honor_pass','hero_flip_card_over','launch_start','lord_gem_verification_quest_receive','activity_festival_equip_seven_days','lord_gem_verification_rank','world_open','season_climb_tower','treasure_discover','noteBookWithoutAlliance','throne_shock_relocation','lord_gem_verification_buff_change','friend_list_option','festival_pass_2','submitDailyQuestBI','exchange_event','invite_new_user','start_gather_march','activity_recycle','achievement','session_start','dialog_skip','lord_gem_verification_ready_open','lord_gem_verification_score_quest_complete','world_event_memorial_book_kvk','equipment_signin','daily_sign_in','ava','session_en','super_exchange_2','wd_lottery','service_monitoring','alliance_trade','activity_drop','session_end','lord_gem_verification_ready_score_change','event_SS_Revenue','first_open')
 ), 
 event_agg_by_day as ( 
 select 
 universal_user_id,
+user_id, 
 event_date, 
 if(sum(login_flag)=0, 0,1) as login_flag, 
 if(sum(pay_flag)=0, 0, 1 ) as pay_flag, 
@@ -419,6 +423,7 @@ ifnull(sum(case when event_name = 'login_lord_gem' then login_lord_gem__count en
 ifnull(sum(case when event_name = 'month_card' then month_card__count end),0) as month_card__count,
 ifnull(sum(case when event_name = 'building_upgrade' then building_upgrade__count end),0) as building_upgrade__count,
 ifnull(sum(case when event_name = 'CMS' then CMS__count end),0) as CMS__count,
+ifnull(sum(case when event_name = 'Halloween_Candy' then Halloween_Candy__count end),0) as Halloween_Candy__count,
 ifnull(sum(case when event_name = 'lord_gem_verification_not_received' then lord_gem_verification_not_received__count end),0) as lord_gem_verification_not_received__count,
 ifnull(sum(case when event_name = 'alliance_craft' then alliance_craft__count end),0) as alliance_craft__count,
 ifnull(sum(case when event_name = 'score_special' then score_special__count end),0) as score_special__count,
@@ -683,7 +688,7 @@ ifnull(sum(case when event_name = 'lord_gem_verification_ready_score_change' the
 ifnull(sum(case when event_name = 'event_SS_Revenue' then event_SS_Revenue__value_in_usd end),0) as event_SS_Revenue__value_in_usd,
 if(sum(case when event_name = 'first_open' then first_open__flag end)>0,1,0) as first_open__flag
 from data_flat_1
-group by universal_user_id, event_date 
+group by universal_user_id,user_id, event_date 
 ) 
 select 
 a.*, 
@@ -702,6 +707,7 @@ ifnull(b.login_lord_gem__count,0) as login_lord_gem__count,
 ifnull(b.month_card__count,0) as month_card__count,
 ifnull(b.building_upgrade__count,0) as building_upgrade__count,
 ifnull(b.CMS__count,0) as CMS__count,
+ifnull(b.Halloween_Candy__count,0) as Halloween_Candy__count,
 ifnull(b.lord_gem_verification_not_received__count,0) as lord_gem_verification_not_received__count,
 ifnull(b.alliance_craft__count,0) as alliance_craft__count,
 ifnull(b.score_special__count,0) as score_special__count,
@@ -969,4 +975,5 @@ current_timestamp() as collect_time
 from full_user_date a 
 left join event_agg_by_day b 
 on a.universal_user_id=b.universal_user_id
+and  a.user_id=b.user_id
 and a.event_date=b.event_date

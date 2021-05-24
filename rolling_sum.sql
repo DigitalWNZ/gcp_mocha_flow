@@ -4,6 +4,7 @@
 --Step 3: Create a schedule job(aka:schedule_job_C) to write the query  result to table_C.
 select 
 universal_user_id,
+user_id,
 install_date,
 event_date,
 login_flag, 
@@ -21,6 +22,7 @@ sum(login_lord_gem__count) over (partition by universal_user_id,event_date order
 sum(month_card__count) over (partition by universal_user_id,event_date order by event_date asc rows unbounded preceding) as month_card__count__sum,
 sum(building_upgrade__count) over (partition by universal_user_id,event_date order by event_date asc rows unbounded preceding) as building_upgrade__count__sum,
 sum(CMS__count) over (partition by universal_user_id,event_date order by event_date asc rows unbounded preceding) as CMS__count__sum,
+sum(Halloween_Candy__count) over (partition by universal_user_id,event_date order by event_date asc rows unbounded preceding) as Halloween_Candy__count__sum,
 sum(lord_gem_verification_not_received__count) over (partition by universal_user_id,event_date order by event_date asc rows unbounded preceding) as lord_gem_verification_not_received__count__sum,
 sum(alliance_craft__count) over (partition by universal_user_id,event_date order by event_date asc rows unbounded preceding) as alliance_craft__count__sum,
 sum(score_special__count) over (partition by universal_user_id,event_date order by event_date asc rows unbounded preceding) as score_special__count__sum,
@@ -285,4 +287,4 @@ sum(lord_gem_verification_ready_score_change__count) over (partition by universa
 event_SS_Revenue__value_in_usd,
 first_open__flag
 from `xxxxx` 
-order by universal_user_id, event_date 
+order by universal_user_id,user_id, event_date 

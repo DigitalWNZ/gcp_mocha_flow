@@ -105,6 +105,11 @@ if __name__ == '__main__':
                     event_json[row[0]]=row[1]
                 else:
                     raise ValueError('No universal_user_id is specified')
+            elif row[0] == 'user_id':
+                if len(row)>1:
+                    event_json[row[0]]=row[1]
+                else:
+                    raise ValueError('No user_id is specified')
             elif row[0] == 'event_date_type':
                 if len(row)>1:
                     event_json[row[0]]=row[1]
