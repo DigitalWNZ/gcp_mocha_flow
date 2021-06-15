@@ -83,18 +83,17 @@ def gen_sql(config_json):
     sql_str = sql_str \
             + distinct_user_install_event +' as ( \nselect \n' \
             + config_json[universal_user_id] + ' as ' +  universal_user_id + ', \n' \
-            + config_json[user_id] + ' as ' + user_id + ', \n' \
             + date_str + ' as install_date, \n' \
             + 'count(0) \n' \
             + 'from `' + config_json['table_name'].replace('`','')+ '` \n' \
             + 'where ' + date_str + ' >= date_sub(' + date_function+ ', interval ' + str(days_look_back) + ' day) \n' \
             + 'and ' + config_json['event_name_field'] + '= \'' + config_json['install_event'] + '\' \n' \
-            + 'group by 1,2,3), \n'
+            + 'group by 1,2), \n'
     # Generate distinct user install event with next
     sql_str = sql_str \
             + distinct_user_install_event_with_next + ' as ( \n' \
             + 'select \n' \
-            + universal_user_id + ',' + user_id + ','\
+            + universal_user_id + ',' \
             + 'install_date, \n' \
             + 'ifnull(lag(install_date) over (partition by universal_user_id order by install_date desc),date(\'9999-12-31\')) as next_install_date, \n' \
             + 'from ' + distinct_user_install_event + '\n' \
@@ -104,14 +103,13 @@ def gen_sql(config_json):
             + full_user_date + ' as ( \n' \
             + 'select \n' \
             + 'a.' + universal_user_id +', \n' \
-            + 'a.' + user_id + ', \n' \
             + 'a.install_date, \n' \
             + 'b.event_date \n' \
             + 'from ' + distinct_user_install_event_with_next + ' a \n' \
             + 'cross join ' + event_window_table_name + ' b \n' \
             + 'where b.event_date >= a.install_date \n' \
             + 'and b.event_date < a.next_install_date \n' \
-            + 'order by ' + universal_user_id + ',' + user_id + ', event_date \n' \
+            + 'order by ' + universal_user_id + ', event_date \n' \
             + '), \n'
 
     # flat event_date
@@ -138,7 +136,6 @@ def gen_sql(config_json):
             + data_flat_1 + ' as ( \n' \
             + 'select \n' \
             + config_json[universal_user_id] + ' as ' +  universal_user_id + ', \n' \
-            + config_json[user_id] + ' as  ' + user_id + ', \n' \
             + 'event_name, \n' \
             + date_str + ' as event_date, \n'
             # + 'event_timestamp, \n' \
@@ -158,7 +155,8 @@ def gen_sql(config_json):
     for login in login_events:
         str_login = str_login \
                   + login + '\','
-    str_login=str_login[:-1] + ')'
+    # str_login=str_login[:-1] + ')'
+    str_login=str_login[:-1] + ',\'' + config_json['install_event'] + '\')'
     str_pay='(\''
     for pay in pay_events:
         str_pay = str_pay \
@@ -251,7 +249,6 @@ def gen_sql(config_json):
             + event_agg_by_day+ ' as ( \n' \
             + 'select \n' \
             + universal_user_id + ',\n' \
-            + user_id + ', \n' \
             + 'event_date, \n' \
             + 'if(sum(login_flag)=0, 0,1) as login_flag, \n' \
             + 'if(sum(pay_flag)=0, 0, 1 ) as pay_flag, \n'
@@ -279,7 +276,7 @@ def gen_sql(config_json):
     # else:
     table_str = table_str \
               + data_flat_1 + '\n' \
-              + 'group by ' + universal_user_id + ',' + user_id + ', event_date \n' \
+              + 'group by ' + universal_user_id + ', event_date \n' \
               + ') \n'
 
     sql_str = sql_str \
@@ -304,7 +301,6 @@ def gen_sql(config_json):
             + 'from ' + full_user_date + ' a \n' \
             + 'left join ' + event_agg_by_day + ' b \n' \
             + 'on a.' + universal_user_id + '=b.' + universal_user_id + '\n' \
-            + 'and  a.' + user_id + '=b.' + user_id + '\n' \
             + 'and a.event_date=b.event_date'
     print('-----------------Daily transform-----------------')
     print(sql_str)
@@ -324,7 +320,7 @@ def gen_sql(config_json):
 
     dedup_sql_str = 'with mocha_with_dup as ( \n' \
                   + 'select *, \n' \
-                  + 'row_number() over (partition by ' + universal_user_id +',' + user_id + ',install_date, event_date order by collect_time desc) as rn \n' \
+                  + 'row_number() over (partition by ' + universal_user_id + ',install_date, event_date order by collect_time desc) as rn \n' \
                   + 'from `xxxxx`) \n' \
                   + 'select * except (rn,collect_time) \n ' \
                   + 'from mocha_with_dup \n ' \
@@ -353,7 +349,6 @@ def gen_sql(config_json):
 
     sum_sql_str='select \n' \
                + universal_user_id + ',\n' \
-               + user_id + ',\n' \
                + 'install_date,\n' \
                + 'event_date,\n' \
                + 'login_flag, \n' \
@@ -373,7 +368,7 @@ def gen_sql(config_json):
     sum_sql_str = sum_sql_str \
                 + event_agg_str[:-2] + '\n' \
                 + 'from `xxxxx` \n' \
-                + 'order by ' + universal_user_id +',' + user_id + ', event_date \n'
+                + 'order by ' + universal_user_id + ', event_date \n'
     print('-----------------Rolling sum transform-----------------')
     print(sum_sql_str)
     with open("rolling_sum.sql", "w") as text_file:
