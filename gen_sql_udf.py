@@ -371,8 +371,8 @@ def gen_sql(config_json):
 
     sum_sql_str = sum_sql_str \
                 + event_agg_str[:-2] + '\n' \
-                + 'from `xxxxx` \n' \
-                + 'order by ' + universal_user_id + ', event_date \n'
+                + 'from `xxxxx` \n'
+                # + 'order by ' + universal_user_id + ', event_date \n'
     print('-----------------Rolling sum transform-----------------')
     print(sum_sql_str)
     with open("rolling_sum.sql", "w") as text_file:
