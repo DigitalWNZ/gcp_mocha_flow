@@ -35,11 +35,11 @@ def gen_sql(config_json):
             + ' ret=0\n' \
             + ' var i=input_arr.length;\n' \
             + ' while(i--){\n' \
-            + '     if (input_arr[i].key===key_value) {\n' \
-            + '         if (value_field === 1) {\n' \
+            + '     if (input_arr[i].key==key_value) {\n' \
+            + '         if (value_field == 1) {\n' \
             + '             ret=input_arr[i].value.int_value;\n' \
             + '             i=0;\n' \
-            + '         } else if (value_field === 2) {\n' \
+            + '         } else if (value_field == 2) {\n' \
             + '             ret=input_arr[i].value.float_value;\n' \
             + '             i=0\n' \
             + '         } else {\n'\
@@ -47,8 +47,12 @@ def gen_sql(config_json):
             + '             i=0\n' \
             + '         }\n' \
             + '     }\n'\
-            + ' }\n' \
-            + ' return ret;\n' \
+            + ' };\n' \
+            + ' if (ret === "") { \n' \
+            + '     return 0; \n' \
+            + ' } else { \n' \
+            + '     return ret; \n' \
+            + ' } \n' \
             + '""";\n'
     sql_str=sql_str \
            + 'with ' + event_window_table_name + ' as ( \n'
