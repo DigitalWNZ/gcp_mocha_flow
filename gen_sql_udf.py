@@ -361,7 +361,8 @@ def gen_sql(config_json):
                + 'install_date,\n' \
                + 'event_date,\n' \
                + 'login_flag, \n' \
-               + 'pay_flag, \n'
+               + 'pay_flag, \n' \
+               + 'platform, \n'
 
     event_agg_str=''
     for i in range(len(list_alias)):
