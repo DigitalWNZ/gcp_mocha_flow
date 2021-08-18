@@ -95,22 +95,24 @@ distinct_user_install_event as (
 select 
 user_id as universal_user_id, 
 parse_date("%Y%m%d",safe_cast(event_date as string))  as install_date, 
+platform, 
 count(0) 
 from `pltv-310710.originaldata_by_day.zsgl_events` 
 where parse_date("%Y%m%d",safe_cast(event_date as string))  >= date_sub(current_date(), interval 60 day) 
 and event_name= 'role' 
-group by 1,2), 
+group by 1,2,3), 
 distinct_user_install_event_with_next as ( 
 select 
-universal_user_id,install_date, 
-ifnull(lag(install_date) over (partition by universal_user_id order by install_date desc),date('9999-12-31')) as next_install_date, 
+universal_user_id,install_date, platform, 
+ifnull(lag(install_date) over (partition by universal_user_id,platform order by install_date desc),date('9999-12-31')) as next_install_date, 
 from distinct_user_install_event
 ), 
 full_user_date as ( 
 select 
 a.universal_user_id, 
 a.install_date, 
-b.event_date 
+a.platform, 
+ b.event_date 
 from distinct_user_install_event_with_next a 
 cross join event_window b 
 where b.event_date >= a.install_date 
@@ -122,6 +124,7 @@ select
 user_id as universal_user_id, 
 event_name, 
 parse_date("%Y%m%d",safe_cast(event_date as string))  as event_date, 
+platform, 
 if (event_name in ('login','role'), 1 , 0) as login_flag, 
  if (event_name in ('pay') , 1 , 0) as pay_flag, 
 if (event_name='_200056',1,0) as _200056__count,
@@ -417,6 +420,7 @@ event_agg_by_day as (
 select 
 universal_user_id,
 event_date, 
+platform, 
 if(sum(login_flag)=0, 0,1) as login_flag, 
 if(sum(pay_flag)=0, 0, 1 ) as pay_flag, 
 ifnull(sum(case when event_name = '_200056' then _200056__count end),0) as _200056__count,
@@ -706,7 +710,7 @@ ifnull(sum(case when event_name = '_200018' then _200018__count end),0) as _2000
 if(sum(case when event_name = '_100126' then _100126__flag end)>0,1,0) as _100126__flag,
 ifnull(sum(case when event_name = 'role' then role__count end),0) as role__count
 from data_flat_1
-group by universal_user_id, event_date 
+group by universal_user_id, event_date,platform 
 ) 
 select 
 a.*, 
@@ -1002,4 +1006,5 @@ current_timestamp() as collect_time
 from full_user_date a 
 left join event_agg_by_day b 
 on a.universal_user_id=b.universal_user_id
-and a.event_date=b.event_date
+and a.event_date=b.event_date 
+and a.platform=b.platform 

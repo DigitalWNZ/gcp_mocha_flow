@@ -88,18 +88,19 @@ def gen_sql(config_json):
             + distinct_user_install_event +' as ( \nselect \n' \
             + config_json[universal_user_id] + ' as ' +  universal_user_id + ', \n' \
             + date_str + ' as install_date, \n' \
+            + 'platform, \n' \
             + 'count(0) \n' \
             + 'from `' + config_json['table_name'].replace('`','')+ '` \n' \
             + 'where ' + date_str + ' >= date_sub(' + date_function+ ', interval ' + str(days_look_back) + ' day) \n' \
             + 'and ' + config_json['event_name_field'] + '= \'' + config_json['install_event'] + '\' \n' \
-            + 'group by 1,2), \n'
+            + 'group by 1,2,3), \n'
     # Generate distinct user install event with next
     sql_str = sql_str \
             + distinct_user_install_event_with_next + ' as ( \n' \
             + 'select \n' \
             + universal_user_id + ',' \
-            + 'install_date, \n' \
-            + 'ifnull(lag(install_date) over (partition by universal_user_id order by install_date desc),date(\'9999-12-31\')) as next_install_date, \n' \
+            + 'install_date, platform, \n' \
+            + 'ifnull(lag(install_date) over (partition by universal_user_id,platform order by install_date desc),date(\'9999-12-31\')) as next_install_date, \n' \
             + 'from ' + distinct_user_install_event + '\n' \
             + '), \n'
     # Cross join user_date and full_event_window
@@ -108,6 +109,7 @@ def gen_sql(config_json):
             + 'select \n' \
             + 'a.' + universal_user_id +', \n' \
             + 'a.install_date, \n' \
+            + 'a.platform, \n ' \
             + 'b.event_date \n' \
             + 'from ' + distinct_user_install_event_with_next + ' a \n' \
             + 'cross join ' + event_window_table_name + ' b \n' \
@@ -141,7 +143,8 @@ def gen_sql(config_json):
             + 'select \n' \
             + config_json[universal_user_id] + ' as ' +  universal_user_id + ', \n' \
             + 'event_name, \n' \
-            + date_str + ' as event_date, \n'
+            + date_str + ' as event_date, \n' \
+            + 'platform, \n'
             # + 'event_timestamp, \n' \
 
     pay_events=config_json['pay_events']
@@ -254,6 +257,7 @@ def gen_sql(config_json):
             + 'select \n' \
             + universal_user_id + ',\n' \
             + 'event_date, \n' \
+            + 'platform, \n' \
             + 'if(sum(login_flag)=0, 0,1) as login_flag, \n' \
             + 'if(sum(pay_flag)=0, 0, 1 ) as pay_flag, \n'
 
@@ -280,7 +284,7 @@ def gen_sql(config_json):
     # else:
     table_str = table_str \
               + data_flat_1 + '\n' \
-              + 'group by ' + universal_user_id + ', event_date \n' \
+              + 'group by ' + universal_user_id + ', event_date,platform \n' \
               + ') \n'
 
     sql_str = sql_str \
@@ -305,7 +309,8 @@ def gen_sql(config_json):
             + 'from ' + full_user_date + ' a \n' \
             + 'left join ' + event_agg_by_day + ' b \n' \
             + 'on a.' + universal_user_id + '=b.' + universal_user_id + '\n' \
-            + 'and a.event_date=b.event_date'
+            + 'and a.event_date=b.event_date \n' \
+            + 'and a.platform=b.platform \n'
     print('-----------------Daily transform-----------------')
     print(sql_str)
     comment_str='--This script aggregate by day the events from users, who installed our apps in last N days.  \n' \
@@ -324,7 +329,7 @@ def gen_sql(config_json):
 
     dedup_sql_str = 'with mocha_with_dup as ( \n' \
                   + 'select *, \n' \
-                  + 'row_number() over (partition by ' + universal_user_id + ',install_date, event_date order by collect_time desc) as rn \n' \
+                  + 'row_number() over (partition by ' + universal_user_id + ',install_date, event_date,platform order by collect_time desc) as rn \n' \
                   + 'from `xxxxx`) \n' \
                   + 'select * except (rn,collect_time) \n ' \
                   + 'from mocha_with_dup \n ' \
@@ -364,7 +369,7 @@ def gen_sql(config_json):
         event_name=list_agg_event_name[i]
         if event_agg != 'flag' and event_name not in pay_events:
             event_agg_str = event_agg_str \
-                        + 'sum(' + list_alias[i] + ') over (partition by ' + universal_user_id + ',event_date order by event_date asc rows unbounded preceding) as ' + list_alias[i]+'__sum,\n'
+                        + 'sum(' + list_alias[i] + ') over (partition by ' + universal_user_id + ',platform,event_date order by event_date asc rows unbounded preceding) as ' + list_alias[i]+'__sum,\n'
         else:
             event_agg_str = event_agg_str \
                           + list_alias[i]+ ',\n'
