@@ -96,14 +96,15 @@ select
 user_id as universal_user_id, 
 parse_date("%Y%m%d",safe_cast(event_date as string))  as install_date, 
 platform, 
+geo.country, 
 count(0) 
 from `pltv-310710.originaldata_by_day.zsgl_events` 
 where parse_date("%Y%m%d",safe_cast(event_date as string))  >= date_sub(current_date(), interval 60 day) 
 and event_name= 'role' 
-group by 1,2,3), 
+group by 1,2,3,4), 
 distinct_user_install_event_with_next as ( 
 select 
-universal_user_id,install_date, platform, 
+universal_user_id,install_date, platform, country,
 ifnull(lag(install_date) over (partition by universal_user_id,platform order by install_date desc),date('9999-12-31')) as next_install_date, 
 from distinct_user_install_event
 ), 
@@ -112,7 +113,8 @@ select
 a.universal_user_id, 
 a.install_date, 
 a.platform, 
- b.event_date 
+a.country, 
+b.event_date 
 from distinct_user_install_event_with_next a 
 cross join event_window b 
 where b.event_date >= a.install_date 

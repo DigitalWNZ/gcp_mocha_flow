@@ -89,17 +89,18 @@ def gen_sql(config_json):
             + config_json[universal_user_id] + ' as ' +  universal_user_id + ', \n' \
             + date_str + ' as install_date, \n' \
             + 'platform, \n' \
+            + 'geo.country, \n' \
             + 'count(0) \n' \
             + 'from `' + config_json['table_name'].replace('`','')+ '` \n' \
             + 'where ' + date_str + ' >= date_sub(' + date_function+ ', interval ' + str(days_look_back) + ' day) \n' \
             + 'and ' + config_json['event_name_field'] + '= \'' + config_json['install_event'] + '\' \n' \
-            + 'group by 1,2,3), \n'
+            + 'group by 1,2,3,4), \n'
     # Generate distinct user install event with next
     sql_str = sql_str \
             + distinct_user_install_event_with_next + ' as ( \n' \
             + 'select \n' \
             + universal_user_id + ',' \
-            + 'install_date, platform, \n' \
+            + 'install_date, platform, country,\n' \
             + 'ifnull(lag(install_date) over (partition by universal_user_id,platform order by install_date desc),date(\'9999-12-31\')) as next_install_date, \n' \
             + 'from ' + distinct_user_install_event + '\n' \
             + '), \n'
@@ -109,7 +110,8 @@ def gen_sql(config_json):
             + 'select \n' \
             + 'a.' + universal_user_id +', \n' \
             + 'a.install_date, \n' \
-            + 'a.platform, \n ' \
+            + 'a.platform, \n' \
+            + 'a.country, \n' \
             + 'b.event_date \n' \
             + 'from ' + distinct_user_install_event_with_next + ' a \n' \
             + 'cross join ' + event_window_table_name + ' b \n' \
@@ -362,7 +364,8 @@ def gen_sql(config_json):
                + 'event_date,\n' \
                + 'login_flag, \n' \
                + 'pay_flag, \n' \
-               + 'platform, \n'
+               + 'platform, \n' \
+               + 'country, \n'
 
     event_agg_str=''
     for i in range(len(list_alias)):
