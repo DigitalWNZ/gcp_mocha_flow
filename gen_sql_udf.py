@@ -312,7 +312,7 @@ def gen_sql(config_json):
             + 'left join ' + event_agg_by_day + ' b \n' \
             + 'on a.' + universal_user_id + '=b.' + universal_user_id + '\n' \
             + 'and a.event_date=b.event_date \n' \
-            + 'and a.platform=b.platform \n'
+            + 'and upper(a.platform)=upper(b.platform) \n'
     print('-----------------Daily transform-----------------')
     print(sql_str)
     comment_str='--This script aggregate by day the events from users, who installed our apps in last N days.  \n' \
