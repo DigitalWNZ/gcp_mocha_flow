@@ -3,31 +3,17 @@
 --Step 2: Create a daily schedule job(aka: schedule_job_A) to write the query result to table_A which contains results from all execution of the schedule job 
  --so their will be duplicate records in table A, the dedup script is in dedup.sql. Save the name of table_A for usage in dedup.sql 
 CREATE TEMP FUNCTION
-abstract_params(input_arr Array<struct<key string, value struct<string_value string, int_value int64, float_value float64, double_value float64>>>, key_value string,value_field int64)
-RETURNS int64
-LANGUAGE js AS r"""
- ret=0
- var i=input_arr.length;
- while(i--){
-     if (input_arr[i].key==key_value) {
-         if (value_field == 1) {
-             ret=input_arr[i].value.int_value;
-             i=0;
-         } else if (value_field == 2) {
-             ret=input_arr[i].value.float_value;
-             i=0
-         } else {
-             ret=input_arr[i].value.double_value;
-             i=0
-         }
-     }
- };
- if (ret === "") { 
-     return 0; 
- } else { 
-     return ret; 
- } 
-""";
+abstract_params(input_arr any type, key_value string,value_field int64) as ( 
+(select
+  case
+     when value_field=1 then input_arr.value.int_value
+     when value_field=2 then safe_cast(input_arr.value.float_value as int64)
+     else safe_cast(input_arr.value.double_value as int64)
+  end
+from unnest(input_arr) as input_arr
+where key=key_value
+limit 1)
+);
 with event_window as ( 
 select current_date() as event_date union all 
 select date_sub(current_date(), interval 1 day) union all 
@@ -1009,4 +995,4 @@ from full_user_date a
 left join event_agg_by_day b 
 on a.universal_user_id=b.universal_user_id
 and a.event_date=b.event_date 
-and a.platform=b.platform 
+and upper(a.platform)=upper(b.platform) 

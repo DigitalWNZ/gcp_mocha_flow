@@ -28,32 +28,45 @@ def gen_sql(config_json):
     else:
         date_function='date(\'' + config_json['start_date'] + '\')'
 
-    sql_str ='CREATE TEMP FUNCTION\n'  \
-            +'abstract_params(input_arr Array<struct<key string, value struct<string_value string, int_value int64, float_value float64, double_value float64>>>, key_value string,value_field int64)\n' \
-            + 'RETURNS int64\n' \
-            + 'LANGUAGE js AS r"""\n' \
-            + ' ret=0\n' \
-            + ' var i=input_arr.length;\n' \
-            + ' while(i--){\n' \
-            + '     if (input_arr[i].key==key_value) {\n' \
-            + '         if (value_field == 1) {\n' \
-            + '             ret=input_arr[i].value.int_value;\n' \
-            + '             i=0;\n' \
-            + '         } else if (value_field == 2) {\n' \
-            + '             ret=input_arr[i].value.float_value;\n' \
-            + '             i=0\n' \
-            + '         } else {\n'\
-            + '             ret=input_arr[i].value.double_value;\n' \
-            + '             i=0\n' \
-            + '         }\n' \
-            + '     }\n'\
-            + ' };\n' \
-            + ' if (ret === "") { \n' \
-            + '     return 0; \n' \
-            + ' } else { \n' \
-            + '     return ret; \n' \
-            + ' } \n' \
-            + '""";\n'
+    # sql_str ='CREATE TEMP FUNCTION\n'  \
+    #         +'abstract_params(input_arr Array<struct<key string, value struct<string_value string, int_value int64, float_value float64, double_value float64>>>, key_value string,value_field int64)\n' \
+    #         + 'RETURNS int64\n' \
+    #         + 'LANGUAGE js AS r"""\n' \
+    #         + ' ret=0\n' \
+    #         + ' var i=input_arr.length;\n' \
+    #         + ' while(i--){\n' \
+    #         + '     if (input_arr[i].key==key_value) {\n' \
+    #         + '         if (value_field == 1) {\n' \
+    #         + '             ret=input_arr[i].value.int_value;\n' \
+    #         + '             i=0;\n' \
+    #         + '         } else if (value_field == 2) {\n' \
+    #         + '             ret=input_arr[i].value.float_value;\n' \
+    #         + '             i=0\n' \
+    #         + '         } else {\n'\
+    #         + '             ret=input_arr[i].value.double_value;\n' \
+    #         + '             i=0\n' \
+    #         + '         }\n' \
+    #         + '     }\n'\
+    #         + ' };\n' \
+    #         + ' if (ret === "") { \n' \
+    #         + '     return 0; \n' \
+    #         + ' } else { \n' \
+    #         + '     return ret; \n' \
+    #         + ' } \n' \
+    #         + '""";\n'
+    sql_str = 'CREATE TEMP FUNCTION\n' \
+            + 'abstract_params(input_arr any type, key_value string,value_field int64) as ( \n' \
+            + '(select\n' \
+            + '  case\n' \
+            + '     when value_field=1 then input_arr.value.int_value\n' \
+            + '     when value_field=2 then safe_cast(input_arr.value.float_value as int64)\n' \
+            + '     else safe_cast(input_arr.value.double_value as int64)\n' \
+            + '  end\n' \
+            + 'from unnest(input_arr) as input_arr\n' \
+            + 'where key=key_value\n' \
+            + 'limit 1)\n' \
+            + ');\n'
+
     sql_str=sql_str \
            + 'with ' + event_window_table_name + ' as ( \n'
     i=0
