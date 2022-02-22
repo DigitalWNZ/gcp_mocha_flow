@@ -58,9 +58,10 @@ def gen_sql(config_json):
             + 'abstract_params(input_arr any type, key_value string,value_field int64) as ( \n' \
             + '(select\n' \
             + '  case\n' \
-            + '     when value_field=1 then input_arr.value.int_value\n' \
-            + '     when value_field=2 then safe_cast(input_arr.value.float_value as int64)\n' \
-            + '     else safe_cast(input_arr.value.double_value as int64)\n' \
+            + '     when value_field=1 then safe_cast(input_arr.value.string_value as float64)\n' \
+            + '     when value_field=2 then safe_cast(input_arr.value.int_value as float64)\n' \
+            + '     when value_field=3 then input_arr.value.float_value \n' \
+            + '     else safe_cast(input_arr.value.double_value as float64)\n' \
             + '  end\n' \
             + 'from unnest(input_arr) as input_arr\n' \
             + 'where key=key_value\n' \
@@ -206,12 +207,14 @@ def gen_sql(config_json):
                 event_value_key_value=event_value['key_value']
                 key_value_str=key_value_str + '\'' + event_value_key_value + '\','
                 event_value_value=event_value['value_field']
-                if event_value_value == 'event_params.value.int_value':
+                if event_value_value == 'event_params.value.string_value':
                     event_value_value=1
-                elif event_value_value == 'event_params.value.float_value':
+                elif event_value_value == 'event_params.value.int_value':
                     event_value_value=2
+                elif event_value_value == 'event_params.value.float_value':
+                    event_value_value=3
                 else:
-                    event_value_value = 3
+                    event_value_value = 4
                 alias=event_name + '__'+ event_value_key_value
                 list_alias.append(alias)
                 event_agg_str = event_agg_str \

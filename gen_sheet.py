@@ -89,9 +89,9 @@ def share_spreadsheet(spreadsheet_id, options, notify=True):
     return res
 
 if __name__ == '__main__':
-    path_to_credential = '/Users/wangez/Downloads/pltv-310710-40916e8155a5.json'
+    path_to_credential = '/Users/wangez/Downloads/im30-data-4c4ae81430fd.json'
     emailAddress = 'wangez@google.com'
-    table_name = 'pltv-310710.lzy_ltv_test.pay_bq_record_test_*'
+    table_name = 'im30-data.im30_bi_ml.roe_mocha'
     legacy_spreadsheet_url=''
     legacy_spreadsheet_id = ''
     # legacy_sheet_id='1348826752'
