@@ -230,7 +230,7 @@ def gen_sql(config_json):
             event_agg_str = event_agg_str \
                             + 'if (event_name=\'' + event_name + '\',1,0) as ' + alias + ',\n'
         else:
-            raise ValueError('The aggregation {} is not supported')
+            raise ValueError('The aggregation {} is not supported'.format(event_agg))
     key_value_str=key_value_str[:-1] + ')'
     print(key_value_str)
     # if unnest:
@@ -348,7 +348,7 @@ def gen_sql(config_json):
     dedup_sql_str = 'with mocha_with_dup as ( \n' \
                   + 'select *, \n' \
                   + 'row_number() over (partition by ' + universal_user_id + ',install_date, event_date,platform order by collect_time desc) as rn \n' \
-                  + 'from `xxxxx`) \n' \
+                  + 'from `xxxxx` where event_date >= date_sub(' + date_function + ',interval ' + str(days_look_back) + ' day)) \n' \
                   + 'select * except (rn,collect_time) \n ' \
                   + 'from mocha_with_dup \n ' \
                   + 'where rn = 1 '

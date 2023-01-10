@@ -2,6 +2,7 @@ import os
 import json
 import sys
 import pandas as pd
+from test import test_class
 
 def parse_config():
 

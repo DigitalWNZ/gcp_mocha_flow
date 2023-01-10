@@ -47,8 +47,8 @@ if __name__ == '__main__':
 
     # emailAddress= 'wangez@google.com'
     # table_name='allen-first.mocha_dataflow.sample_data'
-    path_to_credential = '/Users/wangez/Downloads/allen-first-8d361c053705.json'
-    sheet_url='https://docs.google.com/spreadsheets/d/1f0gfB8EVyF-1qbEpQRHB_MeLUsU4l1BRoENQ4zQG1nQ/edit#gid=770349165'
+    path_to_credential = '/Users/wangez/Downloads/im30-data-4c4ae81430fd.json'
+    sheet_url='https://docs.google.com/spreadsheets/d/1ldDAqdCFxWBwQNgFfVVbi1gTjSTD8l_89A68FXgCrgA/edit#gid=1951632329'
     getid = '^.*/d/(.*)/.*$'
     pattern = re.compile(getid, re.IGNORECASE)
     sheet_id = pattern.findall(sheet_url)[0]

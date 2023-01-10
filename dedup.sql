@@ -5,7 +5,7 @@
 with mocha_with_dup as ( 
 select *, 
 row_number() over (partition by universal_user_id,install_date, event_date,platform order by collect_time desc) as rn 
-from `xxxxx`) 
+from `xxxxx` where event_date >= date_sub(current_date(),interval 60 day)) 
 select * except (rn,collect_time) 
  from mocha_with_dup 
  where rn = 1 

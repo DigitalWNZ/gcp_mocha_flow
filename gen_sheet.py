@@ -91,7 +91,7 @@ def share_spreadsheet(spreadsheet_id, options, notify=True):
 if __name__ == '__main__':
     path_to_credential = '/Users/wangez/Downloads/im30-data-4c4ae81430fd.json'
     emailAddress = 'wangez@google.com'
-    table_name = 'im30-data.im30_bi_ml.roe_mocha'
+    table_name = 'im30-data.im30_bi_ml.lf_mocha'
     legacy_spreadsheet_url=''
     legacy_spreadsheet_id = ''
     # legacy_sheet_id='1348826752'

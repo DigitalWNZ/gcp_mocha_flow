@@ -1,56 +1,911 @@
 {
-    "table_name": "allen-first.gaming_analytics.events",
+    "table_name": "im30-data.im30_bi_ml.lf_mocha",
     "event_date_field": "event_date",
     "event_name_field": "event_name",
-    "universal_user_id": "user_id",
+    "universal_user_id": "firebase_app_instance_id",
     "user_id": "user_id",
     "days_look_back": 60,
-    "event_date_format": "YYYYMMDD",
+    "event_date_format": "YYYY-MM-DD",
     "pay_events": [
-        "purchase"
+        "Pay"
     ],
     "login_events": [
-        "login"
+        "appLaunches"
     ],
-    "install_event": "first_open",
+    "install_event": "completedRegistration",
     "start_date": "",
     "date_function": "current_date()",
     "event_date_type": "",
     "event_aggregation": [
         {
-            "event_name": "click_ad",
-            "Description": "",
+            "event_name": "ArmyMessageHanlder",
+            "Description": "\u70b9\u51fb\u5175\u8425",
             "Aggregation": "count"
         },
         {
-            "event_name": "login",
-            "Description": "",
-            "Aggregation": "flag"
-        },
-        {
-            "event_name": "level_up",
-            "Description": "",
+            "event_name": "DigGroundClickTipsAfterUpgrade",
+            "Description": "\u70b9\u51fb\u5efa\u7b51\u6216\u8005\u79d1\u6280\u5b8c\u6210\u6c14\u6ce1",
             "Aggregation": "count"
         },
         {
-            "event_name": "logout",
-            "Description": "",
+            "event_name": "ArenaLastRecord",
+            "Description": "\u7ade\u6280\u7ed3\u7b97\u4fe1\u606f",
             "Aggregation": "count"
         },
         {
-            "event_name": "purchase",
-            "Description": "",
+            "event_name": "PVECheckpointBattleStart",
+            "Description": "PVE\u63a2\u7d22\u6218\u6597",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "completedRegistration",
+            "Description": "\u6ce8\u518c",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AllianceApplyList",
+            "Description": "\u8054\u76df\u7533\u8bf7\u5217\u8868",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "GarageFormationRepairInfo",
+            "Description": "\u6253\u5f00\u4fee\u8f66\u5382\u754c\u9762",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AddComplete",
+            "Description": "\u6536\u53d6\u58eb\u5175",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "DigGroundStationed",
+            "Description": "\u9a7b\u624e",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AlSiegeWaveRecord",
+            "Description": "\u67e5\u770b\u4e27\u5c38\u6765\u88ad\u6218\u62a5",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AllianceApplyMsg",
+            "Description": "\u7533\u8bf7\u8054\u76df",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "MarkMailStatus",
+            "Description": "\u8bfb\u53d6\u90ae\u4ef6",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "ScienceResearch",
+            "Description": "\u7814\u7a76\u79d1\u6280",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "PlayerFormationExtensionSave",
+            "Description": "\u4fdd\u5b58\u9884\u7f16\u8f91\u9635\u5bb9",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "ZoneShopRefresh",
+            "Description": "\u5237\u65b0\u6218\u533a\u5546\u5e97",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AllianceLogBattleView",
+            "Description": "\u8054\u76df\u6218\u4e89\u8bb0\u5f55",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "ShowStatusItem",
+            "Description": "\u67e5\u770bbuff",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "PlayerFormationClientInfo",
+            "Description": "\u67e5\u770b\u7f16\u961f\u4fe1\u606f",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "DigTradeGetUserProperties",
+            "Description": "\u76f4\u5347\u673a\u9762\u677f\u67e5\u770b\u53d1\u5c55\u5c5e\u6027",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "appLaunches",
+            "Description": "\u767b\u9646",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "PowerRankingHandler",
+            "Description": "\u6218\u6597\u529b\u6392\u884c\u699c",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "RegionForceRankingHandler",
+            "Description": "\u52bf\u529b\u6392\u884c\u699c",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "BattlePassGetUserBuyAdvanceExp",
+            "Description": "\u73a9\u5bb6\u6253\u5f00\u8d2d\u4e70\u5927\u5e08\u51ed\u8bc1\u65f6\u5019\uff0c\u6240\u663e\u793a\u7684\u5f53\u524d\u5df2\u7ecf\u5b8c\u6210\u4efb\u52a1\u989d\u5916\u7684\u7ecf\u9a8c\u503c",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "LocalPersonalRankInfo",
+            "Description": "\u524d\u671f\u6d3b\u52a8\u6392\u884c\u699c",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "DigUserRecyclingResource",
+            "Description": "\u6536\u53d6\u8d44\u6e90",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "GetNewPlayerInfo",
+            "Description": "\u770b\u73a9\u5bb6\u9762\u677f",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "GetWorldCityInfo",
+            "Description": "\u67e5\u770b\u57ce\u5e02\u4fe1\u606f",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "UserAllianceLevelEffectView",
+            "Description": "\u67e5\u770b\u8054\u76df\u7b49\u7ea7\u5c5e\u6027",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "DigFoodCookCancelAndCook",
+            "Description": "\u53d6\u6d88\u505a\u996d",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "BattleEntrance",
+            "Description": "\u70b9\u51fb\u7ade\u6280\u573a",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "PersonalGiftClicked",
+            "Description": "\u67e5\u770b\u4e2a\u4eba\u519b\u5907\u793c\u5305",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "EquipLockHandler",
+            "Description": "\u88c5\u5907\u52a0\u9501\u6216\u8005\u89e3\u9501",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AcceptPersonalActivityReward",
+            "Description": "\u9886\u53d6\u4e2a\u4eba\u519b\u5907\u7bb1\u5b50\u5956\u52b1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AllianceDailyTaskView",
+            "Description": "\u6bcf\u65e5\u4efb\u52a1\u8be6\u7ec6",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "UseItem",
+            "Description": "\u4f7f\u7528\u9053\u5177",
             "Aggregation": "sum",
             "Event_value": {
-                "key_field": "event_parms.key",
-                "key_value": "total_price",
-                "value_field": "event_parms.value.float_value"
+                "key_field": "event_params.key",
+                "key_value": "num",
+                "value_field": "event_params.value.string_value"
             }
         },
         {
-            "event_name": "first_open",
-            "Description": "",
-            "Aggregation": "flag"
+            "event_name": "DigGroundBuildUplevelGold",
+            "Description": "\u7acb\u523b\u5efa\u9020\u5efa\u7b51",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "PlayerFormationSave",
+            "Description": "\u4fdd\u5b58\u7f16\u961f",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AllianceMilitaryMeritExchangeItems",
+            "Description": "\u519b\u529f\u5151\u6362\u9053\u5177",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "DigGroundStationedExp",
+            "Description": "\u6536\u53d6\u9a7b\u624e\u7ecf\u9a8c",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "UserArmsEffectInfo",
+            "Description": "\u67e5\u770b\u58eb\u5175\u5c5e\u6027",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "PowerAllianceRankingHandler",
+            "Description": "\u8054\u76df\u6218\u529b\u6392\u884c\u699c",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "ArenaReportDetailInfo",
+            "Description": "\u7ade\u6280\u573a\u6218\u62a5\u8be6\u60c5",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "HonorEditCmd",
+            "Description": "\u7f16\u8f91\u52cb\u7ae0",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AllianceTransferServerList",
+            "Description": "\u8054\u76df\u8f6c\u533a\u5217\u8868",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "MailRewardBatch",
+            "Description": "\u6279\u91cf\u9886\u53d6\u90ae\u4ef6\u5956\u52b1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "SerialKillingClaimReward",
+            "Description": "\u8fde\u7eed\u6740\u654c\u6d3b\u52a8\u9886\u53d6\u79ef\u5206\u5956\u52b1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "ZoneHonorReward",
+            "Description": "\u6218\u533a\u8363\u8000\u5956\u52b1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AllianceCrossApplyPreview",
+            "Description": "\u9884\u89c8\u5408\u670d\u60c5\u51b5\u4e0b\uff0c\u73a9\u5bb6\u60f3\u8981\u8de8\u670d\u5230\u5728\u5f53\u524d\u670d\u7684\u8054\u76df",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "SetShowQuality",
+            "Description": "\u8bbe\u7f6e\u6e38\u620f\u753b\u9762\u54c1\u8d28",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "ServerTrendsReward",
+            "Description": "\u672b\u65e5\u542f\u793a\u5f55\u5efa\u8bae",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AllianceRewardAllRemove",
+            "Description": "\u8054\u76df\u793c\u7269\u6279\u91cf\u5220\u9664",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "CureFinish",
+            "Description": "\u6cbb\u7597\u58eb\u5175\u5b8c\u6210",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "HonorGetInfoCmd",
+            "Description": "\u67e5\u8be2\u52cb\u7ae0\u4fe1\u606f",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AlSiegePanelReward",
+            "Description": "\u4e27\u5c38\u6765\u88ad\u5956\u52b1\u9636\u4f4d\u8be6\u60c5",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "BoxGiftReward",
+            "Description": "\u6210\u957f\u793c\u5305\u6bcf\u65e5\u5956\u52b1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "PVEGetInfo",
+            "Description": "PVE\u63a2\u7d22\u4fe1\u606f",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "UserExpeditionLook",
+            "Description": "\u67e5\u770b\u8fdc\u5f81\u603b\u5956\u52b1\u4fe1\u606f",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "LotteryHeroCard",
+            "Description": "\u62db\u52df\u82f1\u96c4",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "UserExpeditionEffectInfo",
+            "Description": "\u8fdc\u5f81\u9009\u53d6\u5c5e\u6027\u4fe1\u606f",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "EliteNewRefreshData",
+            "Description": "\u51a0\u519b\u5bf9\u51b3\u6211\u7684\u8d5b\u7a0b\u4fe1\u606f",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "DigGroundBuildUplevel",
+            "Description": "\u5efa\u7b51\u5347\u7ea7",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "GetRankingBasePanelInfo",
+            "Description": "\u6392\u884c\u699c\u6c47\u603b\u4fe1\u606f",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "UserPayReward",
+            "Description": "\u6bcf\u65e5\u5c0f\u989d\u4ed8\u8d39\u6d3b\u52a8",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AllianceMilitaryMeritGet",
+            "Description": "\u67e5\u770b\u4e2a\u4eba\u519b\u529f",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "UserAllianceDevelopDonateView",
+            "Description": "\u8054\u76df\u7b49\u7ea7\u53d1\u5c55\u4efb\u52a1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "DigHeroHandler",
+            "Description": "\u82f1\u96c4\u5347\u7ea7\u6216\u8005\u82f1\u96c4\u6280\u80fd\u5347\u7ea7",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "LFFormationMarchTime",
+            "Description": "\u51fa\u5f81\u65f6\u95f4",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "ZoneShopExchange",
+            "Description": "\u8363\u8000\u5546\u5e97\u8d2d\u4e70\u7269\u54c1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "ZoneHonorChange",
+            "Description": "\u589e\u52a0\u8363\u8000\u5206\u6570\u70b9\u8d5e\u6216\u8005\u70b9\u8e29",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "ZoneShopView",
+            "Description": "\u8363\u8000\u5546\u5e97\u4fe1\u606f",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AllianceReinforceList",
+            "Description": "\u9632\u5b88\u5217\u8868",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AddSoldier",
+            "Description": "\u6536\u53d6\u8bad\u7ec3\u597d\u7684\u58eb\u5175",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "ArenaRematch",
+            "Description": "\u7ade\u6280\u573a\u5237\u65b0\u5bf9\u624b",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AllianceShopUsrBuyRecord",
+            "Description": "\u8054\u76df\u5546\u5e97\u8d2d\u4e70\u8bb0\u5f55",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "SoldierUpgradeComplete",
+            "Description": "\u6536\u53d6\u664b\u5347\u5b8c\u6210\u58eb\u5175",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "DigFoodCookCancel",
+            "Description": "\u53d6\u6d88\u505a\u996d",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AcceptTaskReward",
+            "Description": "\u9886\u53d6\u4efb\u52a1\u5956\u52b1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "DigGroundBuildUplevelNoHeroes",
+            "Description": "\u76f4\u63a5\u5efa\u9020\u82f1\u96c4",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AllianceCommentView",
+            "Description": "\u67e5\u770b\u8054\u76df\u8bc4\u8bba",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "BuildingRankingHandler",
+            "Description": "\u4e2d\u63a7\u5ba4\u7b49\u7ea7\u6392\u884c\u699c",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "GetFoodProduce",
+            "Description": "\u67e5\u770b\u5efa\u9020\u7684\u98df\u7269\u4ea7\u91cf",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "PVEClearanceReplay",
+            "Description": "\u901a\u5173\u8bb0\u5f55\u91cd\u64ad",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "BattlePassGetTaskReward",
+            "Description": "\u8d5b\u5b63\u6218\u4ee4\u9886\u53d6\u4efb\u52a1\u5956\u52b1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "DeleteBatch",
+            "Description": "\u6279\u91cf\u5220\u9664\u90ae\u4ef6",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "LotteryHeroCardInfo",
+            "Description": "\u67e5\u770b\u5361\u6c60\u4fe1\u606f",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "TradeStationGetInfo",
+            "Description": "\u4ea4\u6613\u7ad9\u4fe1\u606f",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "UserAllianceLevelGetReward",
+            "Description": "\u9886\u53d6\u8054\u76df\u7b49\u7ea7\u5956\u52b1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "EliteNewSelfFightList",
+            "Description": "\u51a0\u519b\u5bf9\u51b3\u4ea4\u6218\u8bb0\u5f55",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "ArenaUserFightRecordNew",
+            "Description": "\u7ade\u6280\u573a\u6218\u6597\u8bb0\u5f55",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "UserAlliancePointRank",
+            "Description": "\u8054\u76df\u6350\u732e\u6392\u884c",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "SerialKillingBuyNum",
+            "Description": "\u8fde\u7eed\u6740\u654c\u5c0f\u961f\u6d3b\u52a8\u8d2d\u4e70\u6b21\u6570",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "UserExpeditionWard",
+            "Description": "\u8fdc\u5f81\u75c5\u623f\u8bbe\u7f6e",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "ExchangeByActivity",
+            "Description": "\u53ec\u5524\u6d3b\u52a8\u4ea4\u6613\u9053\u5177",
+            "Aggregation": "sum",
+            "Event_value": {
+                "key_field": "event_params.key",
+                "key_value": "num",
+                "value_field": "event_params.value.string_value"
+            }
+        },
+        {
+            "event_name": "BattlePassGetDropExpInfo",
+            "Description": "\u8d5b\u5b63BP\u7ecf\u9a8c\u4fe1\u606f",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "DigHeroLevelUpPreview",
+            "Description": "\u82f1\u96c4\u5347\u7ea7\u5c5e\u6027\u9884\u89c8",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "HeroQualityActGetReward",
+            "Description": "\u82f1\u96c4\u54c1\u8d28\u6d3b\u52a8\u9886\u53d6\u5956\u52b1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "ArenaGetInfo",
+            "Description": "\u7ade\u6280\u573a\u9762\u677f",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "DigFoodCookCmd",
+            "Description": "\u505a\u996d",
+            "Aggregation": "sum",
+            "Event_value": {
+                "key_field": "event_params.key",
+                "key_value": "number",
+                "value_field": "event_params.value.string_value"
+            }
+        },
+        {
+            "event_name": "UserAllianceDevelopView",
+            "Description": "\u8054\u76df\u53d1\u5c55\u4efb\u52a1\u9762\u677f",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AlSiegeSetAlarm",
+            "Description": "\u5f00\u5173\u4e27\u5c38\u6765\u88ad\u8b66\u62a5",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AddArmyImmediately",
+            "Description": "\u7acb\u5373\u9020\u5175",
+            "Aggregation": "sum",
+            "Event_value": {
+                "key_field": "event_params.key",
+                "key_value": "num",
+                "value_field": "event_params.value.string_value"
+            }
+        },
+        {
+            "event_name": "EquipUpHandler",
+            "Description": "\u88c5\u5907\u5347\u7ea7",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "Pay",
+            "Description": "\u652f\u4ed8",
+            "Aggregation": "sum",
+            "Event_value": {
+                "key_field": "event_params.key",
+                "key_value": "pay_PriceOfClosingCurrency",
+                "value_field": "event_params.value.string_value"
+            }
+        },
+        {
+            "event_name": "CrossPersonalRankInfo",
+            "Description": "\u524d\u671f\u6392\u884c\u699c",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "LotteryRankShowReward",
+            "Description": "\u62bd\u5f00\u6392\u884c\u699c\u5956\u52b1\u5c55\u793a",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "LocalPersonalRankReward",
+            "Description": "\u524d\u671f\u6392\u884c\u699c\u5956\u52b1\u5c55\u793a",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AllianceAcceptInvite",
+            "Description": "\u63a5\u53d7\u8054\u76df\u9080\u8bf7",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "PVEOnHookRewardPreview",
+            "Description": "\u6302\u673a\u5956\u52b1\u9884\u89c8",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AllianceRewardList",
+            "Description": "\u8054\u76df\u793c\u7269\u5217\u8868",
+            "Aggregation": "sum",
+            "Event_value": {
+                "key_field": "event_params.key",
+                "key_value": "len",
+                "value_field": "event_params.value.string_value"
+            }
+        },
+        {
+            "event_name": "PlayerFormationChangeNameSave",
+            "Description": "\u6539\u7f16\u961f\u540d\u5b57",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "GetNearBossPoint",
+            "Description": "\u627e\u9644\u8fd1\u7684boss",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "PayBeforeCheck",
+            "Description": "\u652f\u4ed8\u524d\u6821\u9a8c",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AllianceMilitaryMeritRank",
+            "Description": "\u8054\u76df\u519b\u529f\u6392\u884c",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "RadarCarIntelligenceReceive",
+            "Description": "\u9886\u53d6\u60c5\u62a5\u5956\u52b1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "RadarCarGetInfo",
+            "Description": "\u96f7\u8fbe\u60c5\u62a5\u6570\u636e",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "SyncHeroItemInfo",
+            "Description": "\u540c\u6b65\u82f1\u96c4\u80cc\u5305\u6570\u636e",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AlSiegeStartTimeCancle",
+            "Description": "\u53d6\u6d88\u4e27\u5c38\u6765\u88ad\u4f5c\u6218\u65f6\u95f4",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AllianceSearchUser",
+            "Description": "\u8054\u76df\u67e5\u627e\u73a9\u5bb6",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "PVEClearanceLineupInfos",
+            "Description": "\u901a\u5173\u9635\u5bb9\u4e3b\u754c\u9762\u5217\u8868",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "ArenaGetRankList",
+            "Description": "\u7ade\u6280\u573a\u6392\u884c",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "RandomWhirlSlotReward",
+            "Description": "\u8f6c\u76d8\u6d3b\u52a8\u62bd\u5956",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "MailReward",
+            "Description": "\u9886\u53d6\u90ae\u4ef6\u5956\u52b1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AllianceLogMemberView",
+            "Description": "\u8054\u76df\u6210\u5458\u53d8\u66f4\u65e5\u5fd7",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "UserAllianceDevelopRank",
+            "Description": "\u8054\u76df\u53d1\u5c55\u4efb\u52a1\u6392\u884c",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "CureSoldier",
+            "Description": "\u6cbb\u7597\u4f24\u75c5",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "HeroTrialReward",
+            "Description": "\u82f1\u96c4\u8bd5\u70bc\u5956\u52b1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "ServerTrendsInfo",
+            "Description": "\u672b\u65e5\u542f\u793a\u5f55",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AllianceComment",
+            "Description": "\u8bbe\u7f6e\u8054\u76df\u8bc4\u8bba",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "PreviewBuildingHeroEffectsInfo",
+            "Description": "\u82f1\u96c4\u9a7b\u624e\u5c5e\u6027\u9884\u89c8",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "UpgradeDirectly",
+            "Description": "\u7acb\u523b\u5347\u7ea7\u79d1\u6280",
+            "Aggregation": "sum",
+            "Event_value": {
+                "key_field": "event_params.key",
+                "key_value": "goldCost",
+                "value_field": "event_params.value.string_value"
+            }
+        },
+        {
+            "event_name": "AllianceShowHelp",
+            "Description": "\u8054\u76df\u5e2e\u52a9\u5c55\u793a",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "ReadMail",
+            "Description": "\u67e5\u770b\u5206\u4eab\u90ae\u4ef6",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AlSiegeStartTimeSet",
+            "Description": "\u4e27\u5c38\u6765\u88ad\u8bbe\u7f6e\u4f5c\u6218\u4e8b\u4ef6",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "ZoneHonorRank",
+            "Description": "\u6218\u533a\u8363\u8000\u6392\u884c",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AllianceSearch",
+            "Description": "\u67e5\u770b\u8054\u76df",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "GarageFormationRepair",
+            "Description": "\u4fee\u590d\u8f66\u8f86\u8010\u4e45",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "DoomsdayBattlepassReceiveAllLevelReward",
+            "Description": "\u5468\u672bBP\u7b49\u7ea7\u5956\u52b1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "PVERankingHandler",
+            "Description": "PVE\u6392\u884c\u699c",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "BattlePassGetReward",
+            "Description": "\u8d5b\u5b63\u6218\u4ee4\u9886\u53d6\u5956\u52b1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "SeasonSettlementPackageViewOpen",
+            "Description": "\u8d5b\u5b63\u7ed3\u7b97\u793c\u5305\u4fe1\u606f",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AlSiegeWaveWorld",
+            "Description": "\u4e27\u5c38\u6765\u88ad\u6ce2\u6b21\u4fe1\u606f",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "SpeedQueueMultiple",
+            "Description": "\u52a0\u901f\u961f\u5217",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "EliteNewStrongestRewardReview",
+            "Description": "\u51a0\u519b\u5bf9\u51b3\u5956\u52b1\u9884\u89c8",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "SerialKillingRankInfo",
+            "Description": "\u8fde\u7eed\u6740\u654c\u5c0f\u961f\u6392\u884c\u699c",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "GetAllianceWorldCityInfo",
+            "Description": "\u8054\u76df\u57ce\u5e02\u4fe1\u606f",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "PVEClearanceLineupDetailInfo",
+            "Description": "\u63a2\u7d22\u901a\u5173\u8be6\u60c5\u67e5\u770b",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "UserAllSkinInfo",
+            "Description": "\u76ae\u80a4\u4fe1\u606f",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AllianceShopUsrBuy",
+            "Description": "\u8054\u76df\u5546\u5e97\u6210\u5458\u8d2d\u4e70\u7269\u54c1",
+            "Aggregation": "sum",
+            "Event_value": {
+                "key_field": "event_params.key",
+                "key_value": "num",
+                "value_field": "event_params.value.string_value"
+            }
+        },
+        {
+            "event_name": "DoomsdayBattlepassReceiveLevelReward",
+            "Description": "\u5468\u672bBP\u7b49\u7ea7\u5956\u52b1\u9886\u53d6",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "DigHeroAdvancePreview",
+            "Description": "\u82f1\u96c4\u8fdb\u9636",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AllianceHelpAll",
+            "Description": "\u5e2e\u52a9\u6240\u6709\u6210\u5458",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "GetActivityPanelInfo",
+            "Description": "\u6253\u5f00\u6d3b\u52a8\u9762\u677f",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "PVECheckpointArmyPreview",
+            "Description": "\u63a2\u7d22\u5173\u5361\u9635\u5bb9",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "EquipConsumeHandler",
+            "Description": "\u88c5\u5907\u5206\u89e3",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AllianceRewardAllreceive",
+            "Description": "\u8054\u76df\u793c\u7269\u6279\u91cf\u9886\u53d6",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AllianceShopShow",
+            "Description": "\u6253\u5f00\u8054\u76df\u5546\u5e97",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AllianceMemberRank",
+            "Description": "\u8054\u76df\u6210\u5458\u5217\u8868",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "TradeStationBuy",
+            "Description": "\u4ea4\u6613\u7ad9\u8d2d\u4e70\u8d44\u6e90",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "CheckNickName",
+            "Description": "\u6539\u540d\u5b57check\u5b57\u7b26",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "BindingAccountHandler",
+            "Description": "\u7ed1\u5b9a\u8d26\u53f7",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AllianceLeave",
+            "Description": "\u79bb\u5f00\u8054\u76df",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AllianceShopAlBuy",
+            "Description": "\u8054\u76df\u5546\u5e97\u8fdb\u8d27",
+            "Aggregation": "sum",
+            "Event_value": {
+                "key_field": "event_params.key",
+                "key_value": "num",
+                "value_field": "event_params.value.string_value"
+            }
+        },
+        {
+            "event_name": "MarchLFFormation",
+            "Description": "\u51fa\u5f81",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "RushModeHandler",
+            "Description": "\u6781\u901f\u6a21\u5f0f",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "ArenaCalcFormationPower",
+            "Description": "\u7ade\u6280\u573a\u7f16\u961f\u6218\u6597\u529b",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "ReceiveEventTask",
+            "Description": "\u524d\u671f\u6392\u884c\u699c\u6d3b\u52a8\u9886\u53d6\u4efb\u52a1\u5956\u52b1",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "RankHandler",
+            "Description": "\u8054\u76df\u52bf\u529b\u6392\u884c\u699c",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AllianceShopRecycleShow",
+            "Description": "\u8054\u76df\u5546\u5e97\u56de\u6536",
+            "Aggregation": "count"
+        },
+        {
+            "event_name": "AllianceRewardReceive",
+            "Description": "\u8054\u76df\u793c\u7269\u9886\u53d6",
+            "Aggregation": "count"
         }
     ]
 }
